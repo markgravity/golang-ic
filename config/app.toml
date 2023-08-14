@@ -1,0 +1,14 @@
+app_name = "mark-ic"
+app_port = "8080"
+db_host = "0.0.0.0"
+db_password = "postgres"
+db_username = "postgres"
+
+
+[debug]
+db_name = "mark-ic_development"
+db_port = "5432"
+
+[test]
+db_name = "mark-ic_test"
+db_port = "5433"
