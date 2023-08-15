@@ -2,7 +2,7 @@
 
 ## Introduction
 
-> *App introduction goes here ...*
+An amazing Mark Golang IC!
 
 ## Project Setup
 

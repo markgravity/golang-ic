@@ -2,7 +2,6 @@ package database
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/nimblehq/mark-ic/helpers"
 	"github.com/nimblehq/mark-ic/helpers/log"
@@ -22,7 +21,7 @@ func InitDatabase(databaseURL string) {
 		log.Fatalf("Failed to connect to %v database: %v", gin.Mode(), err)
 	} else {
 		viper.Set("database", db)
-		log.Println(strings.Title(gin.Mode()) + " database connected successfully.")
+		log.Println(gin.Mode() + " database connected successfully.")
 	}
 
 	migrateDB(db)

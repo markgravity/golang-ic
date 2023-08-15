@@ -6,6 +6,7 @@ import (
 	"runtime"
 
 	"github.com/nimblehq/mark-ic/bootstrap"
+	"github.com/nimblehq/mark-ic/database"
 	"github.com/nimblehq/mark-ic/helpers/log"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +21,7 @@ func SetupTestEnvironment() {
 
 	bootstrap.LoadConfig()
 
-	bootstrap.InitDatabase()
+	bootstrap.InitDatabase(database.GetDatabaseURL())
 }
 
 func setRootDir() {
