@@ -12,11 +12,9 @@ env-teardown:
 	docker-compose -f docker-compose.dev.yml down
 
 db/migrate:
-	make wait-for-postgres
 	goose -dir database/migrations -table "migration_versions" postgres "$(DATABASE_URL)" up
 
 db/rollback:
-	make wait-for-postgres
 	goose -dir database/migrations -table "migration_versions" postgres "$(DATABASE_URL)" down
 
 migration/create:
@@ -42,7 +40,6 @@ install-dependencies:
 
 test:
 	docker-compose -f docker-compose.test.yml up -d
-	make wait-for-postgres
 	go test -v -p 1 -count=1 ./...
 	docker-compose -f docker-compose.test.yml down
 

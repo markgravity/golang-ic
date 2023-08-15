@@ -10,8 +10,6 @@ An amazing Mark Golang IC!
 
 - [Go - 1.20](https://golang.org/doc/go1.20) or newer
 
-
-
 ### Development
 
 #### Create an ENV file
