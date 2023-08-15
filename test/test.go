@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/nimblehq/mark-ic/bootstrap"
-	"github.com/nimblehq/mark-ic/database"
-	"github.com/nimblehq/mark-ic/helpers/log"
+	"github.com/markgravity/golang-ic/bootstrap"
+	"github.com/markgravity/golang-ic/database"
+	"github.com/markgravity/golang-ic/helpers/log"
 
 	"github.com/gin-gonic/gin"
 )

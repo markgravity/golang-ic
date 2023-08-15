@@ -1,7 +1,7 @@
 package helpers_test
 
 import (
-	"github.com/nimblehq/mark-ic/helpers"
+	"github.com/markgravity/golang-ic/helpers"
 
 	"github.com/gin-gonic/gin"
 	. "github.com/onsi/ginkgo"

@@ -1,4 +1,4 @@
-module github.com/nimblehq/mark-ic
+module github.com/markgravity/golang-ic
 
 go 1.20
 

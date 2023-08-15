@@ -1,7 +1,7 @@
 package bootstrap
 
 import (
-	apiv1router "github.com/nimblehq/mark-ic/lib/api/v1/routers"
+	apiv1router "github.com/markgravity/golang-ic/lib/api/v1/routers"
 
 	"github.com/gin-gonic/gin"
 )

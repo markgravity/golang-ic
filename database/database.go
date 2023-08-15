@@ -3,8 +3,8 @@ package database
 import (
 	"fmt"
 
-	"github.com/nimblehq/mark-ic/helpers"
-	"github.com/nimblehq/mark-ic/helpers/log"
+	"github.com/markgravity/golang-ic/helpers"
+	"github.com/markgravity/golang-ic/helpers/log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pressly/goose/v3"

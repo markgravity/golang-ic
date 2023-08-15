@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"github.com/nimblehq/mark-ic/lib/api/v1/controllers"
+	"github.com/markgravity/golang-ic/lib/api/v1/controllers"
 
 	"github.com/gin-gonic/gin"
 )

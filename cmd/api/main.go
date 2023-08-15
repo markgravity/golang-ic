@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/nimblehq/mark-ic/bootstrap"
-	"github.com/nimblehq/mark-ic/helpers/log"
+	"github.com/markgravity/golang-ic/bootstrap"
+	"github.com/markgravity/golang-ic/helpers/log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"

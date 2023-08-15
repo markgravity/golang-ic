@@ -1,7 +1,7 @@
 package bootstrap
 
 import (
-	"github.com/nimblehq/mark-ic/database"
+	"github.com/markgravity/golang-ic/database"
 )
 
 func InitDatabase(databaseURL string) {

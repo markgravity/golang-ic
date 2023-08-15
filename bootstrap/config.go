@@ -1,7 +1,7 @@
 package bootstrap
 
 import (
-	"github.com/nimblehq/mark-ic/helpers/log"
+	"github.com/markgravity/golang-ic/helpers/log"
 
 	"github.com/spf13/viper"
 )

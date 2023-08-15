@@ -3,7 +3,7 @@ package helpers_test
 import (
 	"testing"
 
-	"github.com/nimblehq/mark-ic/test"
+	"github.com/markgravity/golang-ic/test"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

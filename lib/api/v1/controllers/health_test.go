@@ -3,8 +3,8 @@ package controllers_test
 import (
 	"net/http"
 
-	"github.com/nimblehq/mark-ic/lib/api/v1/controllers"
-	"github.com/nimblehq/mark-ic/test"
+	"github.com/markgravity/golang-ic/lib/api/v1/controllers"
+	"github.com/markgravity/golang-ic/test"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
