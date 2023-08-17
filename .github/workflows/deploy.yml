@@ -36,15 +36,6 @@ jobs:
             echo "HEROKU_APP_NAME=${{ secrets.HEROKU_APP_NAME_STAGING }}" >> $GITHUB_ENV
           fi
 
-      - name: Set DATABASE_URL
-        run: |
-          if [[ $BRANCH_TAG = "latest" ]]
-          then
-            echo "DATABASE_URL=${{ secrets.DATABASE_URL_PRODUCTION }}" >> $GITHUB_ENV
-          else
-            echo "DATABASE_URL=${{ secrets.DATABASE_URL_STAGING }}" >> $GITHUB_ENV
-          fi
-
       - name: Deploy
         uses: akhileshns/heroku-deploy@v3.8.8
         with:
@@ -52,5 +43,3 @@ jobs:
           heroku_app_name: $HEROKU_APP_NAME
           heroku_email: ${{ secrets.HEROKU_ACCOUNT_EMAIL }}
           usedocker: true
-          docker_build_args: |
-            DATABASE_URL
