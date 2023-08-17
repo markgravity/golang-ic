@@ -1,10 +1,9 @@
 package routers
 
 import (
-	"github.com/markgravity/golang-ic/lib/api/v1/controllers"
-	"github.com/markgravity/golang-ic/services/oauth"
-
 	"github.com/gin-gonic/gin"
+	"github.com/markgravity/golang-ic/lib/api/v1/controllers"
+	"github.com/markgravity/golang-ic/lib/services/oauth"
 )
 
 func ComebineRoutes(engine *gin.Engine) {

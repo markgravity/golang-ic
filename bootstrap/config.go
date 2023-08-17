@@ -1,8 +1,6 @@
 package bootstrap
 
 import (
-	"os"
-
 	"github.com/markgravity/golang-ic/helpers/log"
 
 	"github.com/gin-gonic/gin"
@@ -32,11 +30,6 @@ func LoadENV() {
 	}
 
 	if env == gin.TestMode {
-		// Skip loading ENV file if CI is running
-		if os.Getenv("CI") == "true" {
-			return
-		}
-
 		err := godotenv.Load(".env." + env)
 		if err != nil {
 			log.Fatal("Failed to load .env.", env, err)

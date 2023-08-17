@@ -23,6 +23,7 @@ func SetUpOAuthServer() error {
 	manager.MustTokenStorage(store.NewMemoryTokenStore())
 
 	clientStore := store.NewClientStore()
+
 	err := clientStore.Set(os.Getenv("CLIENT_ID"), &models.Client{
 		ID:     os.Getenv("CLIENT_ID"),
 		Secret: os.Getenv("CLIENT_SECRET"),

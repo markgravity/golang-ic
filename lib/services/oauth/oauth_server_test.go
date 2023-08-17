@@ -3,7 +3,7 @@ package oauth_test
 import (
 	"net/http"
 
-	"github.com/markgravity/golang-ic/services/oauth"
+	"github.com/markgravity/golang-ic/lib/services/oauth"
 	"github.com/markgravity/golang-ic/test"
 
 	. "github.com/onsi/ginkgo"
