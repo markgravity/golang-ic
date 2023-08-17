@@ -35,7 +35,7 @@ func migrateDB(db *gorm.DB) {
 
 	err = goose.Up(sqlDB, "database/migrations", goose.WithAllowMissing())
 	if err != nil {
-		log.Fatalf("Failed to migrate database: %v", err)
+		log.Errorf("Failed to migrate database: %v", err)
 	}
 
 	log.Println("Migrated database successfully.")
