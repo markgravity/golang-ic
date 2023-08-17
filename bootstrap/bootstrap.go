@@ -14,6 +14,6 @@ func Init() {
 
 	err := oauth.SetUpOAuthServer()
 	if err != nil {
-		log.Error("Error when setting up OAuth server: %v", err.Error())
+		log.Errorf("Error when setting up OAuth server: %v", err)
 	}
 }

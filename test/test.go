@@ -2,6 +2,7 @@ package test
 
 import (
 	"os"
+	"path"
 	"path/filepath"
 	"runtime"
 
@@ -20,8 +21,15 @@ func SetupTestEnvironment() {
 	setRootDir()
 
 	bootstrap.LoadConfig()
+	bootstrap.LoadENV()
 
 	bootstrap.InitDatabase(database.GetDatabaseURL())
+}
+
+func RootDir() string {
+	_, currentFile, _, _ := runtime.Caller(0)
+	currentFilePath := path.Join(filepath.Dir(currentFile))
+	return filepath.Dir(currentFilePath)
 }
 
 func setRootDir() {
