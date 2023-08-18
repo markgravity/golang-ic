@@ -37,13 +37,6 @@ func Validate(i interface{}) error {
 	return validate.Struct(i)
 }
 
-func registerValidation(validate *validator.Validate, name string, fn validator.Func) {
-	err := validate.RegisterValidation(name, fn)
-	if err != nil {
-		log.Fatalf("Fail to register %s: %s", name, err.Error())
-	}
-}
-
 func registerTranslations(validate *validator.Validate) (err error) {
 	enLocale := en.New()
 	uTrans := ut.New(enLocale)

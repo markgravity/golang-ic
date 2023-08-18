@@ -1,10 +1,10 @@
 package validators_test
 
 import (
-	"github.com/nimblehq/gulf-approval-web/lib/api/v1/validators"
+	"github.com/markgravity/golang-ic/lib/validators"
 
 	"github.com/go-playground/validator/v10"
-	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 

@@ -3,9 +3,9 @@ package validators_test
 import (
 	"testing"
 
-	"github.com/nimblehq/gulf-approval-web/test"
+	"github.com/markgravity/golang-ic/test"
 
-	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
