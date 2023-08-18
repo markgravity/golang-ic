@@ -2,6 +2,7 @@ package validators
 
 import (
 	"github.com/markgravity/golang-ic/helpers/log"
+	validators "github.com/markgravity/golang-ic/lib/validators/custom"
 
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/en"
@@ -22,6 +23,8 @@ func Init() {
 	if err != nil {
 		log.Fatal("Fail to get register translations")
 	}
+
+	registerValidation(validate, "confirmed", validators.ConfirmedValidator)
 }
 
 func GetTranslator() ut.Translator {
@@ -35,6 +38,13 @@ func Validate(i interface{}) error {
 	}
 
 	return validate.Struct(i)
+}
+
+func registerValidation(validate *validator.Validate, name string, fn validator.Func) {
+	err := validate.RegisterValidation(name, fn)
+	if err != nil {
+		log.Fatalf("Fail to register %s: %s", name, err.Error())
+	}
 }
 
 func registerTranslations(validate *validator.Validate) (err error) {

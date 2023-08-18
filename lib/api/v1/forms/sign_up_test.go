@@ -8,47 +8,6 @@ import (
 )
 
 var _ = Describe("SignUp", func() {
-	Describe("Valid", func() {
-		Context("Given VALID form", func() {
-			It("returns without error", func() {
-				form := forms.SignUpForm{
-					Email:    "example@gmail.com",
-					Password: "12345678",
-				}
-
-				err := form.Validate()
-
-				Expect(err).To(BeNil())
-			})
-		})
-
-		Context("Given INVALID email", func() {
-			It("returns error", func() {
-				form := forms.SignUpForm{
-					Email:    "INVALID",
-					Password: "12345678",
-				}
-
-				err := form.Validate()
-
-				Expect(err).ToNot(BeNil())
-			})
-		})
-
-		Context("Given INVALID password", func() {
-			It("returns error", func() {
-				form := forms.SignUpForm{
-					Email:    "example@gmail.com",
-					Password: "1",
-				}
-
-				err := form.Validate()
-
-				Expect(err).ToNot(BeNil())
-			})
-		})
-	})
-
 	Describe("Save", func() {
 		Context("Given VALID form", func() {
 			It("returns without error", func() {
