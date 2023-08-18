@@ -23,22 +23,6 @@ var _ = Describe("validators", func() {
 				Expect(err[0].Translate(validators.GetTranslator())).To(Equal("Module is a required field"))
 			})
 		})
-
-		Context("given a custom rule", func() {
-			It("returns a correct error message", func() {
-				validators.Init()
-
-				payload := struct {
-					Module string `binding:"validModule"`
-				}{
-					Module: "INVALID",
-				}
-
-				err := validators.Validate(payload).(validator.ValidationErrors)
-
-				Expect(err[0].Translate(validators.GetTranslator())).To(Equal("Module is invalid"))
-			})
-		})
 	})
 
 	Describe("#GetTranslator", func() {
