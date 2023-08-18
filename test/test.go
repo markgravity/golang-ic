@@ -21,7 +21,7 @@ func SetupTestEnvironment() {
 	setRootDir()
 
 	bootstrap.LoadConfig()
-	bootstrap.LoadENV()
+	bootstrap.LoadEnv()
 
 	bootstrap.InitDatabase(database.GetDatabaseURL())
 }

@@ -8,7 +8,7 @@ import (
 
 func Init() {
 	LoadConfig()
-	LoadENV()
+	LoadEnv()
 
 	InitDatabase(database.GetDatabaseURL())
 

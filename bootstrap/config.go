@@ -21,7 +21,7 @@ func LoadConfig() {
 	}
 }
 
-func LoadENV() {
+func LoadEnv() {
 	env := gin.Mode()
 
 	// Skip release mode because there is NO ENV file
@@ -34,6 +34,7 @@ func LoadENV() {
 		if err != nil {
 			log.Fatal("Failed to load .env.", env, err)
 		}
+		return
 	}
 
 	err := godotenv.Load()
