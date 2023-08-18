@@ -13,7 +13,7 @@ import (
 var _ = Describe("OauthServer", func() {
 	Describe("HandleTokenRequest", func() {
 		Context("Given VALID params", func() {
-			It("returns status OK", func() {
+			It("responds with the OK status", func() {
 				headers := map[string]string{
 					"Content-Type": "multipart/form-data",
 				}
@@ -55,7 +55,7 @@ var _ = Describe("OauthServer", func() {
 		})
 
 		Context("Given INVALID params", func() {
-			It("returns error", func() {
+			It("responds with the internal server error status code", func() {
 				headers := map[string]string{
 					"Content-Type": "multipart/form-data",
 				}

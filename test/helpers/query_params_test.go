@@ -1,7 +1,7 @@
 package helpers_test
 
 import (
-	"github.com/markgravity/golang-ic/helpers"
+	"github.com/markgravity/golang-ic/test/helpers"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

@@ -19,16 +19,17 @@ var clientStore *pg.ClientStore
 
 func SetUpOAuthServer() error {
 	manager := manage.NewDefaultManager()
-	// token store
 	manager.MustTokenStorage(store.NewMemoryTokenStore())
 
 	clientStore := store.NewClientStore()
 
-	err := clientStore.Set(os.Getenv("CLIENT_ID"), &models.Client{
+	client := models.Client{
 		ID:     os.Getenv("CLIENT_ID"),
 		Secret: os.Getenv("CLIENT_SECRET"),
 		Domain: os.Getenv("DOMAIN"),
-	})
+	}
+	err := clientStore.Set(client.ID, &client)
+
 	if err != nil {
 		return err
 	}
@@ -41,7 +42,7 @@ func SetUpOAuthServer() error {
 	srv.SetClientInfoHandler(server.ClientFormHandler)
 	srv.SetPasswordAuthorizationHandler(passwordAuthorizationHandler)
 	srv.SetInternalErrorHandler(func(err error) (re *errors.Response) {
-		log.Println("Internal Error:", err.Error())
+		log.Println("OAuth Internal Error:", err.Error())
 		return
 	})
 
@@ -63,6 +64,6 @@ func GetClientStore() *pg.ClientStore {
 }
 
 func passwordAuthorizationHandler(ctx context.Context, clientID, email string, password string) (string, error) {
-	// TODO: Implement the logic in Sign In task
+	// TODO: Implement the logic in Sign In task (#26)
 	return "1", nil
 }

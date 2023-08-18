@@ -9,9 +9,9 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/markgravity/golang-ic/helpers"
 	"github.com/markgravity/golang-ic/helpers/log"
-	
+	"github.com/markgravity/golang-ic/test/helpers"
+
 	"github.com/gin-gonic/gin"
 	"github.com/onsi/ginkgo"
 )
