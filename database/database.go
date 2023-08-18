@@ -17,6 +17,7 @@ var database *gorm.DB
 
 func InitDatabase(databaseURL string) {
 	db, err := gorm.Open(postgres.Open(databaseURL), &gorm.Config{})
+	database = db
 	if err != nil {
 		log.Fatalf("Failed to connect to %v database: %v", gin.Mode(), err)
 	} else {
@@ -36,9 +37,9 @@ func migrateDB(db *gorm.DB) {
 	err = goose.Up(sqlDB, "database/migrations", goose.WithAllowMissing())
 	if err != nil {
 		log.Errorf("Failed to migrate database: %v", err)
+	} else {
+		log.Println("Migrated database successfully.")
 	}
-
-	log.Println("Migrated database successfully.")
 }
 
 func GetDB() *gorm.DB {
