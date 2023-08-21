@@ -23,7 +23,7 @@ var _ = Describe("SignUp", func() {
 
 			It("returns correct user", func() {
 				form := forms.SignUpForm{
-					Email:    "example@gmail.com",
+					Email:    "example2@gmail.com",
 					Password: "12345678",
 				}
 
