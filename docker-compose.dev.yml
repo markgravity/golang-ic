@@ -1,0 +1,11 @@
+version: "3.5"
+
+services:
+  db:
+    image: postgres:14.2
+    container_name: mark-ic_db
+    environment:
+      - POSTGRES_DB=mark-ic_development
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - "5432:5432"

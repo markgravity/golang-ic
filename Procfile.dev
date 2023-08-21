@@ -1,0 +1,1 @@
+web: air -c cmd/api/.air.toml
