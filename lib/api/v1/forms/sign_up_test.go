@@ -13,6 +13,7 @@ var _ = Describe("SignUp", func() {
 	Describe("Save", func() {
 		Context("Given VALID form", func() {
 			It("returns without error", func() {
+				test.CleanUpDatabase()
 				form := forms.SignUpForm{
 					Email:    "example@gmail.com",
 					Password: "12345678",
@@ -24,8 +25,9 @@ var _ = Describe("SignUp", func() {
 			})
 
 			It("returns correct user", func() {
+				test.CleanUpDatabase()
 				form := forms.SignUpForm{
-					Email:    "example2@gmail.com",
+					Email:    "example@gmail.com",
 					Password: "12345678",
 				}
 

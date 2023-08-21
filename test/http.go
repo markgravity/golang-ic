@@ -3,6 +3,7 @@ package test
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/google/jsonapi"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -93,4 +94,14 @@ func bodyReader(headers map[string]string, bodyData map[string]interface{}) io.R
 
 		return bytes.NewReader(data)
 	}
+}
+
+func UnmarshalErrorResponseBody(responseBody *bytes.Buffer) jsonapi.ErrorsPayload {
+	response := jsonapi.ErrorsPayload{}
+	err := json.Unmarshal(responseBody.Bytes(), &response)
+	if err != nil {
+		ginkgo.Fail("Fail to unmarshal response body" + err.Error())
+	}
+
+	return response
 }

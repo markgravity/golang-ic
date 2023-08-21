@@ -1,10 +1,8 @@
 package routers
 
 import (
-	"github.com/markgravity/golang-ic/lib/api/v1/controllers"
-	"github.com/markgravity/golang-ic/lib/services/oauth"
-
 	"github.com/gin-gonic/gin"
+	"github.com/markgravity/golang-ic/lib/api/v1/controllers"
 )
 
 func ComebineRoutes(engine *gin.Engine) {
@@ -12,13 +10,5 @@ func ComebineRoutes(engine *gin.Engine) {
 
 	v1.GET("/health", controllers.HealthController{}.HealthStatus)
 
-	// TODO: Correct the logic in Sign-In task
-	v1.POST("/auth/sign-in", func(context *gin.Context) {
-		server := oauth.GetOAuthServer()
-		err := server.HandleTokenRequest(context.Writer, context.Request)
-
-		if err != nil {
-			_ = context.AbortWithError(403, err)
-		}
-	})
+	v1.POST("/auth/sign-up", controllers.AuthController{}.SignUp)
 }
