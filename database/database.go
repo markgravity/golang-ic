@@ -17,13 +17,13 @@ var database *gorm.DB
 
 func InitDatabase(databaseURL string) {
 	db, err := gorm.Open(postgres.Open(databaseURL), &gorm.Config{})
-	database = db
 	if err != nil {
 		log.Fatalf("Failed to connect to %v database: %v", gin.Mode(), err)
 	} else {
 		viper.Set("database", db)
 		log.Println(gin.Mode() + " database connected successfully.")
 	}
+	database = db
 
 	migrateDB(db)
 }

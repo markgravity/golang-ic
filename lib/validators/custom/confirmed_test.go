@@ -38,4 +38,19 @@ var _ = Describe("#ConfirmedValidator", func() {
 			Expect(err).ToNot(BeNil())
 		})
 	})
+
+	Context("given NO password confirmation", func() {
+		It("returns error", func() {
+			validators.Init()
+			payload := struct {
+				Password             string `binding:"confirmed"`
+				PasswordConfirmation string
+			}{
+				Password: "12345678",
+			}
+			err := validators.Validate(payload)
+
+			Expect(err).ToNot(BeNil())
+		})
+	})
 })

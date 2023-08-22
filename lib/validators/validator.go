@@ -21,7 +21,7 @@ func Init() {
 
 	err := registerTranslations(validate)
 	if err != nil {
-		log.Fatal("Fail to get register translations")
+		log.Fatal("Fail to register translations")
 	}
 
 	registerValidation(validate, "confirmed", validators.ConfirmedValidator)
@@ -61,17 +61,21 @@ func registerTranslations(validate *validator.Validate) (err error) {
 	// Register our translations
 	for _, t := range translations {
 		if t.customTransFunc != nil && t.customRegisFunc != nil {
+			// Register with a custom translation & register
 			err = validate.RegisterTranslation(t.tag, translator, t.customRegisFunc, t.customTransFunc)
 		} else if t.customTransFunc != nil && t.customRegisFunc == nil {
+			// Register with a custom translation only
 			err = validate.RegisterTranslation(t.tag, translator, registrationFunc(t.tag, t.translation, t.override), t.customTransFunc)
 		} else if t.customTransFunc == nil && t.customRegisFunc != nil {
+			// Register with a custom register only
 			err = validate.RegisterTranslation(t.tag, translator, t.customRegisFunc, translateFunc)
 		} else {
+			// Register without a custom translation & register
 			err = validate.RegisterTranslation(t.tag, translator, registrationFunc(t.tag, t.translation, t.override), translateFunc)
 		}
 
 		if err != nil {
-			return
+			return err
 		}
 	}
 
