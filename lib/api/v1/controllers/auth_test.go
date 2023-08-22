@@ -12,7 +12,7 @@ import (
 )
 
 var _ = Describe("AuthController", func() {
-	Describe("POST /sign-in", func() {
+	Describe("POST /sign-up", func() {
 		Context("Given VALID payload", func() {
 			It("returns status OK", func() {
 				test.CleanUpDatabase()
@@ -22,7 +22,7 @@ var _ = Describe("AuthController", func() {
 					"password_confirmation": "test123",
 				}
 
-				ctx, resp := test.MakeRequest(http.MethodPost, "/auth/sign-in", nil, payload)
+				ctx, resp := test.MakeRequest(http.MethodPost, "/auth/sign-up", nil, payload)
 				controller := controllers.AuthController{}
 
 				controller.SignUp(ctx)
@@ -65,7 +65,7 @@ var _ = Describe("AuthController", func() {
 					"password_confirmation": "test123",
 				}
 
-				ctx, resp := test.MakeRequest(http.MethodPost, "/auth/sign-in", nil, payload)
+				ctx, resp := test.MakeRequest(http.MethodPost, "/auth/sign-up", nil, payload)
 				controller := controllers.AuthController{}
 
 				controller.SignUp(ctx)
