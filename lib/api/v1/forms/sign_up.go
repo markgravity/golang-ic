@@ -5,6 +5,8 @@ import (
 	"github.com/markgravity/golang-ic/helpers"
 	"github.com/markgravity/golang-ic/helpers/log"
 	"github.com/markgravity/golang-ic/lib/models"
+	
+	"strings"
 )
 
 type SignUpForm struct {
@@ -21,7 +23,7 @@ func (f *SignUpForm) Save() (*models.User, error) {
 	}
 
 	user := &models.User{
-		Email:             f.Email,
+		Email:             strings.ToLower(f.Email),
 		EncryptedPassword: hashedPassword,
 	}
 
