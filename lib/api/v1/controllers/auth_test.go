@@ -35,7 +35,7 @@ var _ = Describe("AuthController", func() {
 		})
 
 		Context("Given INVALID payload", func() {
-			It("returns an unprocessable entity status", func() {
+			It("returns the unprocessable entity status", func() {
 				payload := map[string]interface{}{
 					"email":                 "INVALID",
 					"password":              "test123",
