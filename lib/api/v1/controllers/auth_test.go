@@ -13,9 +13,12 @@ import (
 
 var _ = Describe("AuthController", func() {
 	Describe("POST /sign-up", func() {
+		AfterEach(func() {
+			test.CleanUpDatabase()
+		})
+
 		Context("Given VALID payload", func() {
 			It("returns status OK", func() {
-				test.CleanUpDatabase()
 				payload := map[string]interface{}{
 					"email":                 "test@gmail.com",
 					"password":              "test123",
@@ -33,7 +36,6 @@ var _ = Describe("AuthController", func() {
 
 		Context("Given INVALID payload", func() {
 			It("returns an unprocessable entity status", func() {
-				test.CleanUpDatabase()
 				payload := map[string]interface{}{
 					"email":                 "INVALID",
 					"password":              "test123",
@@ -51,7 +53,6 @@ var _ = Describe("AuthController", func() {
 
 		Context("Given duplicated email", func() {
 			It("returns an unprocessable entity status", func() {
-				test.CleanUpDatabase()
 				form := forms.SignUpForm{
 					Email:                "test@gmail.com",
 					Password:             "test123",
@@ -70,7 +71,7 @@ var _ = Describe("AuthController", func() {
 
 				controller.SignUp(ctx)
 
-				Expect(resp.Code).To(Equal(http.StatusInternalServerError))
+				Expect(resp.Code).To(Equal(http.StatusUnprocessableEntity))
 			})
 		})
 	})

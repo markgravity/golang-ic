@@ -6,28 +6,12 @@ import (
 	"strings"
 )
 
-func IsNotFound(err error) bool {
-	if err == nil {
-		return false
-	}
-
-	return strings.Contains(strings.ToUpper(err.Error()), NotFound)
-}
-
-func IsTimeout(err error) bool {
-	if err == nil {
-		return false
-	}
-
-	return os.IsTimeout(err)
-}
-
 func GetErrorCode(err error) string {
-	if IsNotFound(err) {
+	if isNotFound(err) {
 		return NotFoundCode
 	}
 
-	if IsTimeout(err) {
+	if isTimeout(err) {
 		return TimeoutCode
 	}
 
@@ -43,4 +27,20 @@ func GetErrorStatusCode(err error) int {
 	default:
 		return http.StatusInternalServerError
 	}
+}
+
+func isNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	return strings.Contains(strings.ToUpper(err.Error()), NotFound)
+}
+
+func isTimeout(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	return os.IsTimeout(err)
 }

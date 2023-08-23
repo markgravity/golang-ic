@@ -61,6 +61,10 @@ func RenderErrorWithDefaultCode(ctx *gin.Context, statusCode int, err error) {
 	RenderError(ctx, statusCode, err.Error(), defaultErrorResponseCode(statusCode))
 }
 
+func RenderUnprocessableEntityError(ctx *gin.Context, err error) {
+	RenderErrorWithDefaultCode(ctx, http.StatusUnprocessableEntity, err)
+}
+
 func RenderErrorWithMeta(ctx *gin.Context, statusCode int, errMessage string, errorCode string, meta *map[string]interface{}) {
 	errorObjects := []*jsonapi.ErrorObject{{
 		Title:  http.StatusText(statusCode),

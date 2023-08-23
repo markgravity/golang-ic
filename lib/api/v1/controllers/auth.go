@@ -3,7 +3,6 @@ package controllers
 import (
 	"net/http"
 
-	errorhelpers "github.com/markgravity/golang-ic/helpers/error"
 	jsonhelpers "github.com/markgravity/golang-ic/helpers/json"
 	"github.com/markgravity/golang-ic/lib/api/v1/forms"
 
@@ -25,8 +24,7 @@ func (AuthController) SignUp(ctx *gin.Context) {
 
 	_, err = form.Save()
 	if err != nil {
-		statusCode := errorhelpers.GetErrorStatusCode(err)
-		jsonhelpers.RenderErrorWithDefaultCode(ctx, statusCode, err)
+		jsonhelpers.RenderUnprocessableEntityError(ctx, err)
 		return
 	}
 
