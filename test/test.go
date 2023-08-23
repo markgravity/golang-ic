@@ -9,6 +9,7 @@ import (
 	"github.com/markgravity/golang-ic/bootstrap"
 	"github.com/markgravity/golang-ic/database"
 	"github.com/markgravity/golang-ic/helpers/log"
+	"github.com/markgravity/golang-ic/lib/services/oauth"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,6 +28,8 @@ func SetupTestEnvironment() {
 	bootstrap.RegisterValidators()
 
     CleanUpDatabase()
+
+	_ = oauth.SetUpOAuthServer()
 }
 
 func CleanUpDatabase() {

@@ -75,4 +75,88 @@ var _ = Describe("AuthController", func() {
 			})
 		})
 	})
+
+	Describe("POST /sign-in", func() {
+		AfterEach(func() {
+			test.CleanUpDatabase()
+		})
+
+		Context("Given VALID payload", func() {
+			It("returns status OK", func() {
+				form := forms.SignUpForm{
+					Email:                "test@gmail.com",
+					Password:             "test123",
+					PasswordConfirmation: "test123",
+				}
+				_, _ = form.Save()
+
+				headers := map[string]string{
+					"Content-Type": "multipart/form-data",
+				}
+				payload := map[string]interface{}{
+					"grant_type":    "password",
+					"client_id":     "1",
+					"client_secret": "2",
+					"username":      form.Email,
+					"password":      form.Password,
+				}
+
+				ctx, resp := test.MakePostFormRequest("/auth/sign-in", headers, payload)
+				controller := controllers.AuthController{}
+
+				controller.SignIn(ctx)
+
+				Expect(resp.Code).To(Equal(http.StatusOK))
+			})
+
+			It("returns correct response body", func() {
+				form := forms.SignUpForm{
+					Email:                "test@gmail.com",
+					Password:             "test123",
+					PasswordConfirmation: "test123",
+				}
+				_, _ = form.Save()
+
+				headers := map[string]string{
+					"Content-Type": "multipart/form-data",
+				}
+				payload := map[string]interface{}{
+					"grant_type":    "password",
+					"client_id":     "1",
+					"client_secret": "2",
+					"username":      form.Email,
+					"password":      form.Password,
+				}
+
+				ctx, resp := test.MakePostFormRequest("/auth/sign-in", headers, payload)
+				controller := controllers.AuthController{}
+
+				controller.SignIn(ctx)
+
+				Expect(resp.Result()).To(test.MatchJSONSchema("response/token/success"))
+			})
+		})
+
+		Context("Given INVALID payload", func() {
+			It("returns a bad request status", func() {
+				headers := map[string]string{
+					"Content-Type": "multipart/form-data",
+				}
+				payload := map[string]interface{}{
+					"grant_type":    "password",
+					"client_id":     "1",
+					"client_secret": "2",
+					"username":      "INVALID",
+					"password":      "123",
+				}
+
+				ctx, resp := test.MakePostFormRequest("/auth/sign-in", headers, payload)
+				controller := controllers.AuthController{}
+
+				controller.SignIn(ctx)
+
+				Expect(resp.Code).To(Equal(http.StatusBadRequest))
+			})
+		})
+	})
 })
