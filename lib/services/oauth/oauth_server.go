@@ -2,17 +2,16 @@ package oauth
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	"github.com/markgravity/golang-ic/database"
 	"github.com/markgravity/golang-ic/helpers"
 	"github.com/markgravity/golang-ic/helpers/log"
-	models2 "github.com/markgravity/golang-ic/lib/models"
+	models "github.com/markgravity/golang-ic/lib/models"
 
 	"github.com/go-oauth2/oauth2/v4/errors"
 	"github.com/go-oauth2/oauth2/v4/manage"
-	"github.com/go-oauth2/oauth2/v4/models"
+	oauthmodels "github.com/go-oauth2/oauth2/v4/models"
 	"github.com/go-oauth2/oauth2/v4/server"
 	"github.com/go-oauth2/oauth2/v4/store"
 	pg "github.com/vgarvardt/go-oauth2-pg/v4"
@@ -27,7 +26,7 @@ func SetUpOAuthServer() error {
 
 	clientStore := store.NewClientStore()
 
-	client := models.Client{
+	client := oauthmodels.Client{
 		ID:     os.Getenv("CLIENT_ID"),
 		Secret: os.Getenv("CLIENT_SECRET"),
 		Domain: os.Getenv("DOMAIN"),
@@ -70,18 +69,16 @@ func GetClientStore() *pg.ClientStore {
 func passwordAuthorizationHandler(ctx context.Context, clientID, email string, password string) (string, error) {
 	db := database.GetDB()
 
-	var user models2.User
-	db.Where("email = ?", email).First(&user)
-	if user.Base.ID.ID() == 0 {
-		msg := fmt.Sprintf("User not found: %v", email)
-		err := errors.New(msg)
-		log.Error(err)
-		return "", err
+	var user models.User
+	result := db.Where("email = ?", email).First(&user)
+	if result.Error != nil {
+		log.Error(result.Error)
+		return "", result.Error
 	}
 
 	err := helpers.ComparePassword(user.EncryptedPassword, password)
 	if err != nil {
-		log.Error("Incorrect password", err)
+		log.Error("Incorrect username or password", err)
 		return "", err
 	}
 
