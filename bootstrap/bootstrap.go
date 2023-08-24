@@ -11,6 +11,7 @@ func Init() {
 	LoadEnv()
 
 	InitDatabase(database.GetDatabaseURL())
+	RegisterValidators()
 
 	err := oauth.SetUpOAuthServer()
 	if err != nil {
