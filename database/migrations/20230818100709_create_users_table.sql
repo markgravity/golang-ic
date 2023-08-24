@@ -1,8 +1,8 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE "public"."users" (
+CREATE TABLE "users" (
     id uuid DEFAULT uuid_generate_v1(),
-    "email" text UNIQUE,
+    "email" citext UNIQUE,
     "encrypted_password" text,
     "created_at" timestamptz,
     "updated_at" timestamptz,
@@ -12,5 +12,5 @@ CREATE TABLE "public"."users" (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE "public"."users";
+DROP TABLE "users";
 -- +goose StatementEnd
