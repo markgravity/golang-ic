@@ -34,6 +34,7 @@ func SetupTestEnvironment() {
 
 func CleanUpDatabase() {
 	database.GetDB().Exec("TRUNCATE TABLE users")
+	database.GetDB().Exec("TRUNCATE TABLE keywords")
 }
 
 func RootDir() string {
