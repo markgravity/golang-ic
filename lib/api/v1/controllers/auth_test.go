@@ -18,7 +18,7 @@ var _ = Describe("AuthController", func() {
 		})
 
 		Context("Given VALID payload", func() {
-			It("returns status OK", func() {
+			It("returns the status OK", func() {
 				payload := map[string]interface{}{
 					"email":                 "test@gmail.com",
 					"password":              "test123",
@@ -138,7 +138,7 @@ var _ = Describe("AuthController", func() {
 		})
 
 		Context("Given INVALID payload", func() {
-			It("returns a bad request status", func() {
+			It("returns the bad request status", func() {
 				headers := map[string]string{
 					"Content-Type": "multipart/form-data",
 				}
