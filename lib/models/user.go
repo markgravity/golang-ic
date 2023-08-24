@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type User struct {
 	Base              Base   `gorm:"embedded;"`
-	Email             string `gorm:"unique"`
+	Email             string `gorm:"unique;"`
 	EncryptedPassword string
 }
 
