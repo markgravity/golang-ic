@@ -11,11 +11,11 @@ var _ = Describe("#ConfirmedValidator", func() {
 		It("does NOT return any errors", func() {
 			validators.Init()
 			payload := struct {
-				Password             string `binding:"confirmed"`
-				PasswordConfirmation string
+				Field             string `binding:"confirmed"`
+				FieldConfirmation string
 			}{
-				Password:             "12345678",
-				PasswordConfirmation: "12345678",
+				Field:             "12345678",
+				FieldConfirmation: "12345678",
 			}
 			err := validators.Validate(payload)
 
@@ -27,11 +27,11 @@ var _ = Describe("#ConfirmedValidator", func() {
 		It("returns error", func() {
 			validators.Init()
 			payload := struct {
-				Password             string `binding:"confirmed"`
-				PasswordConfirmation string
+				Field             string `binding:"confirmed"`
+				FieldConfirmation string
 			}{
-				Password:             "12345678",
-				PasswordConfirmation: "INVALID",
+				Field:             "12345678",
+				FieldConfirmation: "INVALID",
 			}
 			err := validators.Validate(payload)
 
@@ -39,14 +39,14 @@ var _ = Describe("#ConfirmedValidator", func() {
 		})
 	})
 
-	Context("given NO password confirmation", func() {
+	Context("given NO field confirmation", func() {
 		It("returns error", func() {
 			validators.Init()
 			payload := struct {
-				Password             string `binding:"confirmed"`
-				PasswordConfirmation string
+				Field             string `binding:"confirmed"`
+				FieldConfirmation string
 			}{
-				Password: "12345678",
+				Field: "12345678",
 			}
 			err := validators.Validate(payload)
 
