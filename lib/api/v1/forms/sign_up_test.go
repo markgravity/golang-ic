@@ -54,7 +54,7 @@ var _ = Describe("SignUp", func() {
 
 	Describe("Validations", func() {
 		Context("Given INVALID email", func() {
-			It("returns the error", func() {
+			It("returns an error", func() {
 				form := forms.SignUpForm{
 					Email:                "INVALID",
 					Password:             "12345678",
@@ -68,7 +68,7 @@ var _ = Describe("SignUp", func() {
 		})
 
 		Context("Given EMPTY password", func() {
-			It("returns the error", func() {
+			It("returns an error", func() {
 				form := forms.SignUpForm{
 					Email:                "example@gmail.com",
 					PasswordConfirmation: "12345678",
@@ -81,7 +81,7 @@ var _ = Describe("SignUp", func() {
 		})
 
 		Context("Given password less than min requirement", func() {
-			It("returns the error", func() {
+			It("returns an error", func() {
 				form := forms.SignUpForm{
 					Email:                "example@gmail.com",
 					Password:             "123",
@@ -95,7 +95,7 @@ var _ = Describe("SignUp", func() {
 		})
 
 		Context("Given INVALID password confirmation", func() {
-			It("returns the error", func() {
+			It("returns an error", func() {
 				form := forms.SignUpForm{
 					Email:                "example@gmail.com",
 					Password:             "12345678",
