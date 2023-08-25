@@ -70,13 +70,13 @@ func passwordAuthorizationHandler(ctx context.Context, clientID, email string, p
 	db := database.GetDB()
 
 	var user models.User
-	result := db.Where("email = ?", email).First(&user)
-	if result.Error != nil {
-		log.Error(result.Error)
-		return "", result.Error
+	err := db.Where("email = ?", email).First(&user).Error
+	if err != nil {
+		log.Error(err)
+		return "", err
 	}
 
-	err := helpers.ComparePassword(user.EncryptedPassword, password)
+	err = helpers.ComparePassword(user.EncryptedPassword, password)
 	if err != nil {
 		log.Error("Incorrect username or password", err)
 		return "", err
