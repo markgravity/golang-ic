@@ -36,13 +36,13 @@ func (AuthController) SignUp(ctx *gin.Context) {
 func (AuthController) SignIn(ctx *gin.Context) {
 	server := oauth.GetOAuthServer()
 
-	gt, tgr, err := server.ValidationTokenRequest(ctx.Request)
+	grantType, request, err := server.ValidationTokenRequest(ctx.Request)
 	if err != nil {
 		jsonhelpers.RenderErrorWithDefaultCode(ctx, http.StatusBadRequest, err)
 		return
 	}
 
-	token, err := server.GetAccessToken(ctx, gt, tgr)
+	token, err := server.GetAccessToken(ctx, grantType, request)
 	if err != nil {
 		jsonhelpers.RenderErrorWithDefaultCode(ctx, http.StatusBadRequest, err)
 		return
