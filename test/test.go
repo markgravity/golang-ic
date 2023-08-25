@@ -24,6 +24,10 @@ func SetupTestEnvironment() {
 	bootstrap.LoadEnv()
 
 	bootstrap.InitDatabase(database.GetDatabaseURL())
+	bootstrap.RegisterValidators()
+
+	// Clean all data
+	database.GetDB().Exec("TRUNCATE TABLE users")
 }
 
 func RootDir() string {
