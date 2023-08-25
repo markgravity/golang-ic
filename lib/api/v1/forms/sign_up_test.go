@@ -4,6 +4,7 @@ import (
 	"github.com/markgravity/golang-ic/helpers"
 	"github.com/markgravity/golang-ic/lib/api/v1/forms"
 	"github.com/markgravity/golang-ic/lib/validators"
+	"github.com/markgravity/golang-ic/test"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -14,7 +15,7 @@ var _ = Describe("SignUp", func() {
 		AfterEach(func() {
 			test.CleanUpDatabase()
 		})
-		
+
 		Context("Given VALID form", func() {
 			It("returns without error", func() {
 				form := forms.SignUpForm{
