@@ -40,7 +40,7 @@ var selectors = map[string][]string{
 const urlPattern = "https://www.google.com/search?q=%s"
 
 func (c *Crawler) Run() error {
-	if c.Keyword == nil {
+	if c.Keyword == nil || c.Keyword.Base.ID.ID() == 0 {
 		return errors.New("keyword is required")
 	}
 

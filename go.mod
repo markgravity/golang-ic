@@ -3,6 +3,7 @@ module github.com/markgravity/golang-ic
 go 1.20
 
 require (
+	github.com/fatih/structs v1.1.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-faker/faker/v4 v4.1.1
 	github.com/go-oauth2/oauth2/v4 v4.5.2
@@ -10,6 +11,8 @@ require (
 	github.com/go-playground/universal-translator v0.18.0
 	github.com/go-playground/validator/v10 v10.10.0
 	github.com/gocolly/colly/v2 v2.1.0
+	github.com/gocraft/work v0.5.1
+	github.com/gomodule/redigo v1.8.9
 	github.com/google/jsonapi v1.0.0
 	github.com/google/uuid v1.3.0
 	github.com/joho/godotenv v1.5.1
@@ -18,6 +21,7 @@ require (
 	github.com/pressly/goose/v3 v3.15.0
 	github.com/samber/lo v1.38.1
 	github.com/sirupsen/logrus v1.9.3
+	github.com/soveran/redisurl v0.0.0-20180322091936-eb325bc7a4b8
 	github.com/spf13/viper v1.7.1
 	github.com/vgarvardt/go-oauth2-pg/v4 v4.4.3
 	github.com/xeipuuv/gojsonschema v1.2.0
@@ -63,6 +67,7 @@ require (
 	github.com/nxadm/tail v1.4.4 // indirect
 	github.com/pelletier/go-toml v1.8.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.1 // indirect
+	github.com/robfig/cron v1.2.0 // indirect
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca // indirect
 	github.com/spf13/afero v1.1.2 // indirect
 	github.com/spf13/cast v1.3.0 // indirect
