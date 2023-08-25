@@ -4,11 +4,14 @@ import (
 	"context"
 	"os"
 
+	"github.com/markgravity/golang-ic/database"
+	"github.com/markgravity/golang-ic/helpers"
 	"github.com/markgravity/golang-ic/helpers/log"
+	models "github.com/markgravity/golang-ic/lib/models"
 
 	"github.com/go-oauth2/oauth2/v4/errors"
 	"github.com/go-oauth2/oauth2/v4/manage"
-	"github.com/go-oauth2/oauth2/v4/models"
+	oauthmodels "github.com/go-oauth2/oauth2/v4/models"
 	"github.com/go-oauth2/oauth2/v4/server"
 	"github.com/go-oauth2/oauth2/v4/store"
 	pg "github.com/vgarvardt/go-oauth2-pg/v4"
@@ -23,7 +26,7 @@ func SetUpOAuthServer() error {
 
 	clientStore := store.NewClientStore()
 
-	client := models.Client{
+	client := oauthmodels.Client{
 		ID:     os.Getenv("CLIENT_ID"),
 		Secret: os.Getenv("CLIENT_SECRET"),
 		Domain: os.Getenv("DOMAIN"),
@@ -64,6 +67,20 @@ func GetClientStore() *pg.ClientStore {
 }
 
 func passwordAuthorizationHandler(ctx context.Context, clientID, email string, password string) (string, error) {
-	// TODO: Implement the logic in Sign In task (#26)
-	return "1", nil
+	db := database.GetDB()
+
+	var user models.User
+	err := db.Where("email = ?", email).First(&user).Error
+	if err != nil {
+		log.Error(err)
+		return "", err
+	}
+
+	err = helpers.ComparePassword(user.EncryptedPassword, password)
+	if err != nil {
+		log.Error("Incorrect username or password", err)
+		return "", err
+	}
+
+	return user.Base.ID.String(), nil
 }
