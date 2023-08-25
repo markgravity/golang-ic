@@ -26,7 +26,10 @@ func SetupTestEnvironment() {
 	bootstrap.InitDatabase(database.GetDatabaseURL())
 	bootstrap.RegisterValidators()
 
-	// Clean all data
+    CleanUpDatabase()
+}
+
+func CleanUpDatabase() {
 	database.GetDB().Exec("TRUNCATE TABLE users")
 }
 

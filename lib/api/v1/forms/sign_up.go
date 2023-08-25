@@ -10,9 +10,9 @@ import (
 )
 
 type SignUpForm struct {
-	Email                string `form:"email" binding:"required,email"`
-	Password             string `form:"password" binding:"required,min=6,confirmed"`
-	PasswordConfirmation string `form:"password_confirmation" binding:"required"`
+	Email                string `json:"email" binding:"required,email"`
+	Password             string `json:"password" binding:"required,min=6,confirmed"`
+	PasswordConfirmation string `json:"password_confirmation" binding:"required"`
 }
 
 func (f *SignUpForm) Save() (*models.User, error) {

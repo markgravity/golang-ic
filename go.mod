@@ -4,15 +4,18 @@ go 1.20
 
 require (
 	github.com/gin-gonic/gin v1.8.1
+	github.com/go-faker/faker/v4 v4.1.1
 	github.com/go-oauth2/oauth2/v4 v4.5.2
 	github.com/go-playground/locales v0.14.0
 	github.com/go-playground/universal-translator v0.18.0
 	github.com/go-playground/validator/v10 v10.10.0
+	github.com/google/jsonapi v1.0.0
 	github.com/google/uuid v1.3.0
 	github.com/joho/godotenv v1.5.1
 	github.com/onsi/ginkgo v1.15.0
 	github.com/onsi/gomega v1.10.5
 	github.com/pressly/goose/v3 v3.15.0
+	github.com/samber/lo v1.38.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.7.1
 	github.com/vgarvardt/go-oauth2-pg/v4 v4.4.3
@@ -67,6 +70,7 @@ require (
 	github.com/vgarvardt/go-pg-adapter v1.0.0 // indirect
 	github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb // indirect
 	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
+	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
 	golang.org/x/net v0.14.0 // indirect
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect

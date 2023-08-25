@@ -4,6 +4,7 @@ import (
 	"github.com/markgravity/golang-ic/helpers"
 	"github.com/markgravity/golang-ic/lib/api/v1/forms"
 	"github.com/markgravity/golang-ic/lib/validators"
+	"github.com/markgravity/golang-ic/test"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -11,6 +12,10 @@ import (
 
 var _ = Describe("SignUp", func() {
 	Describe("Save", func() {
+		AfterEach(func() {
+			test.CleanUpDatabase()
+		})
+
 		Context("Given VALID form", func() {
 			It("returns without error", func() {
 				form := forms.SignUpForm{
@@ -25,7 +30,7 @@ var _ = Describe("SignUp", func() {
 
 			It("returns correct user", func() {
 				form := forms.SignUpForm{
-					Email:    "example2@gmail.com",
+					Email:    "example@gmail.com",
 					Password: "12345678",
 				}
 
