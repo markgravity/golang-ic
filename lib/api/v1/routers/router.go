@@ -10,4 +10,8 @@ func ComebineRoutes(engine *gin.Engine) {
 	v1 := engine.Group("/api/v1")
 
 	v1.GET("/health", controllers.HealthController{}.HealthStatus)
+
+	v1.POST("/auth/sign-in", controllers.AuthController{}.SignIn)
+
+	v1.POST("/auth/sign-up", controllers.AuthController{}.SignUp)
 }

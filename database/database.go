@@ -23,6 +23,7 @@ func InitDatabase(databaseURL string) {
 		viper.Set("database", db)
 		log.Println(gin.Mode() + " database connected successfully.")
 	}
+	database = db
 
 	migrateDB(db)
 }
@@ -36,9 +37,9 @@ func migrateDB(db *gorm.DB) {
 	err = goose.Up(sqlDB, "database/migrations", goose.WithAllowMissing())
 	if err != nil {
 		log.Errorf("Failed to migrate database: %v", err)
+	} else {
+		log.Println("Migrated database successfully.")
 	}
-
-	log.Println("Migrated database successfully.")
 }
 
 func GetDB() *gorm.DB {
