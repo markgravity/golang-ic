@@ -20,7 +20,7 @@ var _ = Describe("Crawler", func() {
 
 	Describe("#Run", func() {
 		Context("given VALID keyword", func() {
-			It("returns the parsing result", func() {
+			It("processes the keyword and updates it in DB", func() {
 				cassetteName := "services/crawler/success"
 				_, recorder := test.GetRecorderClient(cassetteName)
 				defer func() {
@@ -45,8 +45,8 @@ var _ = Describe("Crawler", func() {
 				db.Find(&keywords)
 
 				Expect(keywords).To(HaveLen(1))
-				Expect(keywords[0].Keyword).To(Equal("iphone 12"))
-				Expect(keywords[0].Status).To(Equal(models.Processed))
+				Expect(keywords[0].Text).To(Equal("iphone 12"))
+				Expect(keywords[0].Status).To(Equal(models.Completed))
 				Expect(keywords[0].LinksCount).To(Equal(10))
 				Expect(keywords[0].NonAdwordLinksCount).To(Equal(10))
 				Expect(keywords[0].NonAdwordLinks).NotTo(BeNil())
@@ -58,7 +58,7 @@ var _ = Describe("Crawler", func() {
 		})
 
 		Context("given INVALID keyword", func() {
-			It("returns the parsing result", func() {
+			It("returns the error", func() {
 				service := crawler.Crawler{Keyword: nil}
 				err := service.Run()
 

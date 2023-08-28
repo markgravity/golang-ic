@@ -3,7 +3,7 @@
 CREATE TABLE "keywords" (
      "id" uuid DEFAULT uuid_generate_v1(),
      "user_id" uuid NOT NULL,
-     "keyword" text NOT NULL,
+     "text" text NOT NULL,
      "status" text NOT NULL DEFAULT 'pending'::text,
      "links_count" int8 NOT NULL,
      "non_adword_links" json,
@@ -13,8 +13,10 @@ CREATE TABLE "keywords" (
      "html_code" text NOT NULL,
      "created_at" timestamptz NOT NULL,
      "updated_at" timestamptz NOT NULL,
+     CONSTRAINT "keywords_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id"),
      PRIMARY KEY ("id")
 );
+CREATE INDEX "keywords_text" ON "keywords" USING BTREE ("text");
 -- +goose StatementEnd
 
 -- +goose Down

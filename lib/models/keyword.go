@@ -12,7 +12,7 @@ type KeywordStatus string
 const (
 	Failed     KeywordStatus = "failed"
 	Pending    KeywordStatus = "pending"
-	Processed  KeywordStatus = "processed"
+	Completed  KeywordStatus = "completed"
 	Processing KeywordStatus = "processing"
 
 	InvalidKeywordStatusErr = "invalid keyword status"
@@ -21,7 +21,7 @@ const (
 type Keyword struct {
 	Base                Base `gorm:"embedded;"`
 	UserID              uuid.UUID
-	Keyword             string `gorm:"unique;"`
+	Text                string `gorm:"unique;"`
 	Status              KeywordStatus
 	LinksCount          int
 	NonAdwordLinks      sql.NullString `gorm:"type(json);null;"`

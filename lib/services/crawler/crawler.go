@@ -101,13 +101,17 @@ func (c *Crawler) Run() error {
 		c.parsingResult = &parsingResult
 		err := c.save()
 		if err != nil {
-			c.Keyword.Status = models.Failed
-			_ = c.Keyword.Save(c.DB)
 			log.Error("Error when saving to DB:", err)
+
+			c.Keyword.Status = models.Failed
+			err = c.Keyword.Save(c.DB)
+			if err != nil {
+				log.Error("Error, cannot update status to Failed:", err)
+			}
 		}
 	})
 
-	requestUrl := fmt.Sprintf(urlPattern, url.QueryEscape(c.Keyword.Keyword))
+	requestUrl := fmt.Sprintf(urlPattern, url.QueryEscape(c.Keyword.Text))
 	return c.Collector.Visit(requestUrl)
 }
 
@@ -135,19 +139,15 @@ func (c *Crawler) save() error {
 	keyword.LinksCount = totalCount
 	keyword.HtmlCode = c.parsingResult.HTMLCode
 
-	keyword.Status = models.Processed
-	err = keyword.Save(c.DB)
-	if err != nil {
-		return err
-	}
+	keyword.Status = models.Completed
 
-	return err
+	return keyword.Save(c.DB)
 }
 
 func formatLink(link string) string {
 	if strings.HasPrefix(link, "http") {
 		return link
-	} else {
-		return "https://www.google.com" + link
 	}
+
+	return "https://www.google.com" + link
 }

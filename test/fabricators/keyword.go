@@ -10,8 +10,8 @@ import (
 func FabricateKeyword(keyword string, user *models.User) *models.Keyword {
 	db := database.GetDB()
 	keywordObject := &models.Keyword{
-		Keyword: keyword,
-		User:    user,
+		Text: keyword,
+		User: user,
 	}
 
 	err := keywordObject.Save(db)
