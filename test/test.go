@@ -25,8 +25,8 @@ func SetupTestEnvironment() {
 	bootstrap.LoadEnv()
 
 	bootstrap.InitDatabase(database.GetDatabaseURL())
-    database.SetupRedisDB()
-    CleanUpDatabase()
+	database.SetupRedisDB()
+	CleanUpDatabase()
 
 	bootstrap.RegisterValidators()
 

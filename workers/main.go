@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/markgravity/golang-ic/bootstrap"
-	"github.com/markgravity/golang-ic/lib/jobs"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"github.com/markgravity/golang-ic/bootstrap"
 	"github.com/markgravity/golang-ic/database"
+	"github.com/markgravity/golang-ic/lib/jobs"
 
 	"github.com/gocraft/work"
 )
