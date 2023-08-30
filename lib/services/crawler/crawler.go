@@ -33,7 +33,6 @@ type ParsingResult struct {
 
 var selectors = map[string][]string{
 	"nonAds":      {"#search .yuRUbf > a", ".ZINbbc.xpd .kCrYT > a"},
-	"ads":         {"#tads .d5oMvf > a", ".uEierd .ZINbbc a.C8nzq.BmP5tf"},
 	"mobileLinks": {".ezO2md a.fuLhoc.ZWRArf"},
 	"mobileAds":   {"span.dloBPe"},
 }
@@ -78,13 +77,6 @@ func (c *Crawler) Run() error {
 		c.Collector.OnHTML(pattern, func(e *colly.HTMLElement) {
 			link := formatLink(e.Attr("href"))
 			parsingResult.NonAdwordLinks = append(parsingResult.NonAdwordLinks, link)
-		})
-	}
-
-	for _, pattern := range selectors["ads"] {
-		c.Collector.OnHTML(pattern, func(e *colly.HTMLElement) {
-			link := formatLink(e.Attr("href"))
-			parsingResult.AdwordLinks = append(parsingResult.AdwordLinks, link)
 		})
 	}
 
