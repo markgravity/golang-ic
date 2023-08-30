@@ -11,7 +11,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("UploadKeywords", func() {
+var _ = Describe("Keywords", func() {
 	Describe("Save", func() {
 		AfterEach(func() {
 			test.CleanUpDatabase()
@@ -24,7 +24,7 @@ var _ = Describe("UploadKeywords", func() {
 					"text/csv",
 				)
 				user := fabricators.FabricateUser("test@gmail.com", "12345678")
-				form := forms.UploadKeywordsForm{
+				form := forms.KeywordsForm{
 					FileHeader: fileHeader,
 					User:       user,
 				}
@@ -42,7 +42,7 @@ var _ = Describe("UploadKeywords", func() {
 					"keywords/text.txt",
 					"text/plain",
 				)
-				form := forms.UploadKeywordsForm{
+				form := forms.KeywordsForm{
 					FileHeader: fileHeader,
 					User:       user,
 				}
@@ -60,7 +60,7 @@ var _ = Describe("UploadKeywords", func() {
 					"keywords/empty.csv",
 					"text/csv",
 				)
-				form := forms.UploadKeywordsForm{
+				form := forms.KeywordsForm{
 					FileHeader: fileHeader,
 					User:       user,
 				}
@@ -74,7 +74,7 @@ var _ = Describe("UploadKeywords", func() {
 		Context("Given NULL file", func() {
 			It("returns an error", func() {
 				user := fabricators.FabricateUser("test@gmail.com", "12345678")
-				form := forms.UploadKeywordsForm{
+				form := forms.KeywordsForm{
 					FileHeader: nil,
 					User:       user,
 				}
