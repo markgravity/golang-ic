@@ -19,13 +19,12 @@ var _ = Describe("UploadKeywords", func() {
 
 		Context("Given VALID form", func() {
 			It("returns without error", func() {
-				file, fileHeader, _ := test.GetMultipartAttributesFromFile(
+				_, fileHeader, _ := test.GetMultipartAttributesFromFile(
 					"keywords/valid.csv",
 					"text/csv",
 				)
 				user := fabricators.FabricateUser("test@gmail.com", "12345678")
 				form := forms.UploadKeywordsForm{
-					File:       file,
 					FileHeader: fileHeader,
 					User:       user,
 				}
@@ -39,12 +38,11 @@ var _ = Describe("UploadKeywords", func() {
 		Context("Given INVALID file type", func() {
 			It("returns an error", func() {
 				user := fabricators.FabricateUser("test@gmail.com", "12345678")
-				file, fileHeader, _ := test.GetMultipartAttributesFromFile(
+				_, fileHeader, _ := test.GetMultipartAttributesFromFile(
 					"keywords/text.txt",
 					"text/plain",
 				)
 				form := forms.UploadKeywordsForm{
-					File:       file,
 					FileHeader: fileHeader,
 					User:       user,
 				}
@@ -58,12 +56,11 @@ var _ = Describe("UploadKeywords", func() {
 		Context("Given INVALID file content", func() {
 			It("returns an error", func() {
 				user := fabricators.FabricateUser("test@gmail.com", "12345678")
-				file, fileHeader, _ := test.GetMultipartAttributesFromFile(
+				_, fileHeader, _ := test.GetMultipartAttributesFromFile(
 					"keywords/empty.csv",
 					"text/csv",
 				)
 				form := forms.UploadKeywordsForm{
-					File:       file,
 					FileHeader: fileHeader,
 					User:       user,
 				}
@@ -77,12 +74,8 @@ var _ = Describe("UploadKeywords", func() {
 		Context("Given NULL file", func() {
 			It("returns an error", func() {
 				user := fabricators.FabricateUser("test@gmail.com", "12345678")
-				_, fileHeader, _ := test.GetMultipartAttributesFromFile(
-					"keywords/valid.csv",
-					"text/csv",
-				)
 				form := forms.UploadKeywordsForm{
-					FileHeader: fileHeader,
+					FileHeader: nil,
 					User:       user,
 				}
 

@@ -14,9 +14,8 @@ import (
 )
 
 type UploadKeywordsForm struct {
-	File       multipart.File        `binding:"required"`
-	FileHeader *multipart.FileHeader `binding:"required"`
-	User       *models.User          `binding:"required"`
+	FileHeader *multipart.FileHeader `form:"file" binding:"required"`
+	User       *models.User
 }
 
 func (f *UploadKeywordsForm) Save() error {
@@ -53,7 +52,12 @@ func (f *UploadKeywordsForm) readCSVFile() ([]string, error) {
 		return nil, errors.New("file type is not supported")
 	}
 
-	reader := csv.NewReader(f.File)
+	file, err := f.FileHeader.Open()
+	if err != nil {
+		return nil, errors.New("file is not found")
+	}
+
+	reader := csv.NewReader(file)
 	var keywords []string
 
 	for {
