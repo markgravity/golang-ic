@@ -59,9 +59,19 @@ func MakePostFormRequest(url string, headers map[string]string, params map[strin
 	return ctx, responseRecorder
 }
 
+func MakeMultipartRequestRequest(url string, filePath string, contentType string) (*gin.Context, *httptest.ResponseRecorder) {
+	headers, payload := CreateMultipartRequestInfo(filePath, contentType)
+	request, _ := http.NewRequest("POST", url, payload)
+	request.Header = headers
+
+	ctx, responseRecorder := CreateGinTestContext()
+	ctx.Request = request
+
+	return ctx, responseRecorder
+}
+
 func GetMultipartAttributesFromFile(filePath string, contentType string) (multipart.File, *multipart.FileHeader, error) {
-	realPath := fmt.Sprintf("%s/test/fixtures/files/%s", RootDir(), filePath)
-	headers, payload := CreateMultipartRequestInfo(realPath, contentType)
+	headers, payload := CreateMultipartRequestInfo(filePath, contentType)
 	req, err := http.NewRequest("POST", "", payload)
 	if err != nil {
 		return nil, nil, err
@@ -74,7 +84,8 @@ func GetMultipartAttributesFromFile(filePath string, contentType string) (multip
 }
 
 func CreateMultipartRequestInfo(filePath string, contentType string) (http.Header, *bytes.Buffer) {
-	file, err := os.Open(filePath)
+	realPath := fmt.Sprintf("%s/test/fixtures/files/%s", RootDir(), filePath)
+	file, err := os.Open(realPath)
 	if err != nil {
 		log.Error("Failed to open file: ", err)
 	}
