@@ -41,7 +41,7 @@ var _ = Describe("Crawl", func() {
 				_ = job.Handle()
 
 				db.First(&keyword)
-				Expect(keyword.Status).To(Equal(models.Processed))
+				Expect(keyword.Status).To(Equal(models.Completed))
 			})
 		})
 

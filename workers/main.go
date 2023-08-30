@@ -15,7 +15,6 @@ import (
 type Context struct{}
 
 func init() {
-	bootstrap.LoadConfig()
 	bootstrap.LoadEnv()
 	bootstrap.InitDatabase(database.GetDatabaseURL())
 	database.SetupRedisDB()
