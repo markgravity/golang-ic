@@ -2,20 +2,21 @@ package forms
 
 import (
 	"encoding/csv"
+	"errors"
 	"io"
 	"mime/multipart"
 
 	"github.com/markgravity/golang-ic/database"
+	"github.com/markgravity/golang-ic/lib/jobs"
 	"github.com/markgravity/golang-ic/lib/models"
-	"github.com/markgravity/golang-ic/lib/services/crawler"
 
-	"github.com/gocolly/colly/v2"
+	"github.com/fatih/structs"
 )
 
 type UploadKeywordsForm struct {
-	File       multipart.File
-	FileHeader *multipart.FileHeader
-	User       *models.User
+	File       multipart.File        `binding:"required"`
+	FileHeader *multipart.FileHeader `binding:"required"`
+	User       *models.User          `binding:"required"`
 }
 
 func (f *UploadKeywordsForm) Save() error {
@@ -25,11 +26,10 @@ func (f *UploadKeywordsForm) Save() error {
 		return err
 	}
 
-	// TODO: Replace to use a worker in https://github.com/markgravity/golang-ic/issues/44
 	for _, k := range keywords {
 		keyword := &models.Keyword{
-			Keyword: k,
-			User:    f.User,
+			Text: k,
+			User: f.User,
 		}
 
 		err := keyword.Save(db)
@@ -37,13 +37,9 @@ func (f *UploadKeywordsForm) Save() error {
 			return err
 		}
 
-		collector := colly.NewCollector()
-		keywordCrawler := crawler.Crawler{
-			DB:        db,
-			Keyword:   keyword,
-			Collector: collector,
-		}
-		err = keywordCrawler.Run()
+		job := jobs.Crawl{}
+		job.SetArgs(structs.Map(keyword))
+		err = jobs.Dispatch(&job)
 		if err != nil {
 			return err
 		}
@@ -53,6 +49,10 @@ func (f *UploadKeywordsForm) Save() error {
 }
 
 func (f *UploadKeywordsForm) readCSVFile() ([]string, error) {
+	if f.FileHeader.Header.Get("Content-Type") != "text/csv" {
+		return nil, errors.New("file type is not supported")
+	}
+
 	reader := csv.NewReader(f.File)
 	var keywords []string
 
@@ -65,6 +65,11 @@ func (f *UploadKeywordsForm) readCSVFile() ([]string, error) {
 		}
 
 		keywords = append(keywords, row[0])
+	}
+
+	keywordLength := len(keywords)
+	if keywordLength <= 0 || keywordLength > 1000 {
+		return nil, errors.New("CSV file only accepts from 1 to 1000 keywords")
 	}
 
 	return keywords, nil
