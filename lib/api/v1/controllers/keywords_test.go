@@ -18,7 +18,7 @@ var _ = Describe("KeywordsController", func() {
 		})
 
 		Context("Given VALID payload", func() {
-			FIt("returns the status OK", func() {
+			It("returns the status OK", func() {
 				fabricators.FabricateUser("test@gmail.com", "123456")
 				ctx, resp := test.MakeMultipartRequestRequest("/keywords/upload", "keywords/valid.csv", "text/csv")
 
