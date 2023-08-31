@@ -3,10 +3,11 @@ package forms
 import (
 	"encoding/csv"
 	"errors"
+	"github.com/markgravity/golang-ic/database"
+	"github.com/markgravity/golang-ic/helpers/log"
 	"io"
 	"mime/multipart"
 
-	"github.com/markgravity/golang-ic/database"
 	"github.com/markgravity/golang-ic/lib/jobs"
 	"github.com/markgravity/golang-ic/lib/models"
 
@@ -19,7 +20,13 @@ type KeywordsForm struct {
 }
 
 func (f *KeywordsForm) Save() error {
-	keywords, err := f.createKeywordsFromCSVFile()
+	keywords, err := f.readKeywordsFromCSVFile()
+	if err != nil {
+		return err
+	}
+
+	db := database.GetDB()
+	err = db.Create(&keywords).Error
 	if err != nil {
 		return err
 	}
@@ -36,12 +43,19 @@ func (f *KeywordsForm) Save() error {
 	return nil
 }
 
-func (f *KeywordsForm) createKeywordsFromCSVFile() ([]models.Keyword, error) {
+func (f *KeywordsForm) readKeywordsFromCSVFile() ([]models.Keyword, error) {
 	if f.FileHeader.Header.Get("Content-Type") != "text/csv" {
 		return nil, errors.New("file type is not supported")
 	}
 
 	file, err := f.FileHeader.Open()
+	defer func(file multipart.File) {
+		err := file.Close()
+		if err != nil {
+			log.Errorf("unable to close file %v", err)
+		}
+	}(file)
+
 	if err != nil {
 		return nil, errors.New("file is not found")
 	}
@@ -69,8 +83,6 @@ func (f *KeywordsForm) createKeywordsFromCSVFile() ([]models.Keyword, error) {
 		return nil, errors.New("CSV file only accepts from 1 to 1000 keywords")
 	}
 
-	db := database.GetDB()
-	err = db.Create(&keywords).Error
 	if err != nil {
 		return nil, err
 	}
