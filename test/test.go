@@ -25,9 +25,10 @@ func SetupTestEnvironment() {
 	bootstrap.LoadEnv()
 
 	bootstrap.InitDatabase(database.GetDatabaseURL())
-	bootstrap.RegisterValidators()
-
+	database.SetupRedisDB()
 	CleanUpDatabase()
+
+	bootstrap.RegisterValidators()
 
 	_ = oauth.SetUpOAuthServer()
 }

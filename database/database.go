@@ -1,9 +1,8 @@
 package database
 
 import (
-	"fmt"
+	"os"
 
-	"github.com/markgravity/golang-ic/helpers"
 	"github.com/markgravity/golang-ic/helpers/log"
 
 	"github.com/gin-gonic/gin"
@@ -51,15 +50,5 @@ func GetDB() *gorm.DB {
 }
 
 func GetDatabaseURL() string {
-	if gin.Mode() == gin.ReleaseMode {
-		return viper.GetString("DATABASE_URL")
-	}
-
-	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
-		viper.GetString("db_username"),
-		viper.GetString("db_password"),
-		viper.GetString("db_host"),
-		helpers.GetStringConfig("db_port"),
-		helpers.GetStringConfig("db_name"),
-	)
+	return os.Getenv("DATABASE_URL")
 }

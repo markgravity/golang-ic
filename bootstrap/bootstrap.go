@@ -12,6 +12,7 @@ func Init() {
 
 	InitDatabase(database.GetDatabaseURL())
 	RegisterValidators()
+	database.SetupRedisDB()
 
 	err := oauth.SetUpOAuthServer()
 	if err != nil {

@@ -9,3 +9,9 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - "5433:5432"
+
+  redis_test:
+    image: redis:6.2.0
+    container_name: mark-ic_redis_test
+    ports:
+      - "6380:6379"
