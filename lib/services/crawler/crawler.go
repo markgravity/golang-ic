@@ -14,6 +14,7 @@ import (
 
 	"github.com/gocolly/colly/v2"
 	"github.com/gocolly/colly/v2/extensions"
+	"github.com/google/uuid"
 )
 
 type Crawler struct {
@@ -40,7 +41,7 @@ var selectors = map[string][]string{
 const urlPattern = "https://www.google.com/search?q=%s"
 
 func (c *Crawler) Run() error {
-	if c.Keyword == nil || c.Keyword.Base.ID.ID() == 0 {
+	if c.Keyword == nil || c.Keyword.Base.ID == uuid.Nil {
 		return errors.New("keyword is required")
 	}
 
