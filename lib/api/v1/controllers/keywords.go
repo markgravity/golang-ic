@@ -32,7 +32,7 @@ func (KeywordsController) Upload(ctx *gin.Context) {
 
 	err = form.Save()
 	if err != nil {
-		jsonhelpers.RenderErrorWithDefaultCode(ctx, http.StatusBadRequest, err)
+		jsonhelpers.RenderUnprocessableEntityError(ctx, err)
 		return
 	}
 
