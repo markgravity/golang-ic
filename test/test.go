@@ -27,13 +27,13 @@ func SetupTestEnvironment() {
 	bootstrap.InitDatabase(database.GetDatabaseURL())
 	bootstrap.RegisterValidators()
 
-    CleanUpDatabase()
+	CleanUpDatabase()
 
 	_ = oauth.SetUpOAuthServer()
 }
 
 func CleanUpDatabase() {
-	database.GetDB().Exec("TRUNCATE TABLE users")
+	database.GetDB().Exec("TRUNCATE TABLE keywords, users")
 }
 
 func RootDir() string {
