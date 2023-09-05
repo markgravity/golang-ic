@@ -4,8 +4,10 @@ import (
 	"net/http"
 
 	"github.com/markgravity/golang-ic/lib/api/v1/controllers"
+	"github.com/markgravity/golang-ic/lib/middlewares"
 	"github.com/markgravity/golang-ic/test"
 	"github.com/markgravity/golang-ic/test/fabricators"
+	"github.com/markgravity/golang-ic/test/helpers"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -19,8 +21,12 @@ var _ = Describe("KeywordsController", func() {
 
 		Context("Given VALID payload", func() {
 			It("returns the status OK", func() {
-				fabricators.FabricateUser("test@gmail.com", "123456")
-				ctx, resp := test.MakeMultipartRequestRequest("/keywords/upload", "keywords/valid.csv", "text/csv")
+				user := fabricators.FabricateUser("test@gmail.com", "123456")
+				headers := http.Header{}
+				headers.Set("Authorization", "Bearer "+helpers.GenerateToken(user.Base.ID.String()))
+
+				ctx, resp := test.MakeMultipartRequestRequest("/keywords/upload", "keywords/valid.csv", "text/csv", headers)
+				middlewares.HandleAuthenticatedRequest()(ctx)
 
 				controller := controllers.KeywordsController{}
 				controller.Upload(ctx)
@@ -42,8 +48,11 @@ var _ = Describe("KeywordsController", func() {
 
 		Context("Given INVALID payload", func() {
 			It("returns the unprocessable entity status", func() {
-				fabricators.FabricateUser("test@gmail.com", "123456")
-				ctx, resp := test.MakeMultipartRequestRequest("/keywords/upload", "keywords/invalid.csv", "text/csv")
+				user := fabricators.FabricateUser("test@gmail.com", "123456")
+				headers := http.Header{}
+				headers.Set("Authorization", "Bearer "+helpers.GenerateToken(user.Base.ID.String()))
+				ctx, resp := test.MakeMultipartRequestRequest("/keywords/upload", "keywords/invalid.csv", "text/csv", headers)
+				middlewares.HandleAuthenticatedRequest()(ctx)
 
 				controller := controllers.KeywordsController{}
 				controller.Upload(ctx)

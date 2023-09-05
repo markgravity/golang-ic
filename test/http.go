@@ -59,10 +59,10 @@ func MakePostFormRequest(url string, headers map[string]string, params map[strin
 	return ctx, responseRecorder
 }
 
-func MakeMultipartRequestRequest(url string, filePath string, contentType string) (*gin.Context, *httptest.ResponseRecorder) {
-	headers, payload := CreateMultipartRequestInfo(filePath, contentType)
+func MakeMultipartRequestRequest(url string, filePath string, contentType string, headers http.Header) (*gin.Context, *httptest.ResponseRecorder) {
+	newHeaders, payload := CreateMultipartRequestInfo(filePath, contentType, headers)
 	request, _ := http.NewRequest("POST", url, payload)
-	request.Header = headers
+	request.Header = newHeaders
 
 	ctx, responseRecorder := CreateGinTestContext()
 	ctx.Request = request
@@ -71,7 +71,7 @@ func MakeMultipartRequestRequest(url string, filePath string, contentType string
 }
 
 func GetMultipartAttributesFromFile(filePath string, contentType string) (multipart.File, *multipart.FileHeader, error) {
-	headers, payload := CreateMultipartRequestInfo(filePath, contentType)
+	headers, payload := CreateMultipartRequestInfo(filePath, contentType, nil)
 	req, err := http.NewRequest("POST", "", payload)
 	if err != nil {
 		return nil, nil, err
@@ -83,7 +83,7 @@ func GetMultipartAttributesFromFile(filePath string, contentType string) (multip
 	return file, fileHeader, err
 }
 
-func CreateMultipartRequestInfo(filePath string, contentType string) (http.Header, *bytes.Buffer) {
+func CreateMultipartRequestInfo(filePath string, contentType string, headers http.Header) (http.Header, *bytes.Buffer) {
 	realPath := fmt.Sprintf("%s/test/fixtures/files/%s", RootDir(), filePath)
 	file, err := os.Open(realPath)
 	if err != nil {
@@ -104,7 +104,9 @@ func CreateMultipartRequestInfo(filePath string, contentType string) (http.Heade
 	}
 	writer.Close()
 
-	headers := http.Header{}
+	if headers == nil {
+		headers = http.Header{}
+	}
 	headers.Set("Content-Type", writer.FormDataContentType())
 
 	return headers, body
