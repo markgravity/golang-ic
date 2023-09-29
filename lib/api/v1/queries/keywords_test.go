@@ -52,27 +52,7 @@ var _ = Describe("KeywordsQuery", func() {
 			})
 		})
 
-		Context("Given INCORRECT user", func() {
-			It("returns empty keywords", func() {
-				user1 := fabricators.FabricateUser("test@gmail.com", "123456")
-				user2 := fabricators.FabricateUser("test2@gmail.com", "123456")
-				fabricators.FabricateKeyword("k1", user1)
-				fabricators.FabricateKeyword("k2", user1)
-
-				params := queries.KeywordsQueryParams{
-					Offset: 0,
-					Limit:  1,
-				}
-				query := queries.KeywordsQuery{
-					User: *user2,
-				}
-				keywords, _ := query.Where(params)
-
-				Expect(keywords).To(BeEmpty())
-			})
-		})
-
-		Context("Given a offset value", func() {
+		Context("Given Offset", func() {
 			It("returns correct keywords", func() {
 				user := fabricators.FabricateUser("test@gmail.com", "123456")
 				fabricators.FabricateKeyword("k1", user)
@@ -92,7 +72,7 @@ var _ = Describe("KeywordsQuery", func() {
 			})
 		})
 
-		Context("Given a limit value", func() {
+		Context("Given Limit", func() {
 			It("returns correct keywords", func() {
 				user := fabricators.FabricateUser("test@gmail.com", "123456")
 				fabricators.FabricateKeyword("k1", user)
@@ -108,6 +88,26 @@ var _ = Describe("KeywordsQuery", func() {
 				keywords, _ := query.Where(params)
 
 				Expect(keywords).To(HaveLen(2))
+			})
+		})
+
+		Context("Given INCORRECT user", func() {
+			It("returns empty keywords", func() {
+				user1 := fabricators.FabricateUser("test@gmail.com", "123456")
+				user2 := fabricators.FabricateUser("test2@gmail.com", "123456")
+				fabricators.FabricateKeyword("k1", user1)
+				fabricators.FabricateKeyword("k2", user1)
+
+				params := queries.KeywordsQueryParams{
+					Offset: 0,
+					Limit:  1,
+				}
+				query := queries.KeywordsQuery{
+					User: *user2,
+				}
+				keywords, _ := query.Where(params)
+
+				Expect(keywords).To(BeEmpty())
 			})
 		})
 	})
