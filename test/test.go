@@ -25,15 +25,16 @@ func SetupTestEnvironment() {
 	bootstrap.LoadEnv()
 
 	bootstrap.InitDatabase(database.GetDatabaseURL())
-	bootstrap.RegisterValidators()
+	database.SetupRedisDB()
+	CleanUpDatabase()
 
-    CleanUpDatabase()
+	bootstrap.RegisterValidators()
 
 	_ = oauth.SetUpOAuthServer()
 }
 
 func CleanUpDatabase() {
-	database.GetDB().Exec("TRUNCATE TABLE users")
+	database.GetDB().Exec("TRUNCATE TABLE keywords, users")
 }
 
 func RootDir() string {
