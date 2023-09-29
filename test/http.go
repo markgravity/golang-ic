@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/markgravity/golang-ic/lib/models"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -44,6 +45,16 @@ func MakeRequest(method string, url string, headers map[string]string, params ma
 	return ctx, responseRecorder
 }
 
+func MakeAuthenticatedRequest(method string, url string, headers map[string]string, params map[string]interface{}, user *models.User) (*gin.Context, *httptest.ResponseRecorder) {
+	if headers == nil {
+		headers = map[string]string{}
+	}
+	accessToken := "Bearer " + helpers.GenerateToken(user.Base.ID.String())
+	headers["Authorization"] = accessToken
+
+	return MakeRequest(method, url, headers, params)
+}
+
 func MakePostFormRequest(url string, headers map[string]string, params map[string]interface{}) (*gin.Context, *httptest.ResponseRecorder) {
 	if headers == nil {
 		headers = map[string]string{}
@@ -59,7 +70,18 @@ func MakePostFormRequest(url string, headers map[string]string, params map[strin
 	return ctx, responseRecorder
 }
 
-func MakeMultipartRequestRequest(url string, filePath string, contentType string, headers http.Header) (*gin.Context, *httptest.ResponseRecorder) {
+func MakeMultipartRequestRequest(url string, filePath string, contentType string, headers http.Header, user *models.User) (*gin.Context, *httptest.ResponseRecorder) {
+	if user != nil {
+		if headers == nil {
+			headers = http.Header{}
+		}
+
+		headers.Set(
+			"Authorization",
+			"Bearer "+helpers.GenerateToken(user.Base.ID.String()),
+		)
+	}
+
 	newHeaders, payload := CreateMultipartRequestInfo(filePath, contentType, headers)
 	request, _ := http.NewRequest("POST", url, payload)
 	request.Header = newHeaders

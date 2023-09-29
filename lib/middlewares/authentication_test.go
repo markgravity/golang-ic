@@ -7,13 +7,11 @@ import (
 	"github.com/markgravity/golang-ic/lib/middlewares"
 	"github.com/markgravity/golang-ic/test"
 	"github.com/markgravity/golang-ic/test/fabricators"
-	"github.com/markgravity/golang-ic/test/helpers"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("AuthenticatedRequest", func() {
+var _ = Describe("Authentication", func() {
 	AfterEach(func() {
 		test.CleanUpDatabase()
 	})
@@ -21,27 +19,17 @@ var _ = Describe("AuthenticatedRequest", func() {
 	Describe("HandleAuthenticatedRequest", func() {
 		Context("given VALID headers", func() {
 			It("returns status OK", func() {
-				user := fabricators.FabricateUser("test@gmail.com", "123456")
-				accessToken := "Bearer " + helpers.GenerateToken(user.Base.ID.String())
-				headers := map[string]string{
-					"Authorization": accessToken,
-				}
-
-				ctx, response := test.MakeRequest(http.MethodGet, "/", headers, nil)
+				user := fabricators.FabricateTester()
+				ctx, response := test.MakeAuthenticatedRequest(http.MethodGet, "/", nil, nil, user)
 
 				middlewares.HandleAuthenticatedRequest()(ctx)
 
 				Expect(response.Result().StatusCode).To(Equal(http.StatusOK))
 			})
 
-			It("sets data to context", func() {
-				user := fabricators.FabricateUser("test@gmail.com", "123456")
-				accessToken := "Bearer " + helpers.GenerateToken(user.Base.ID.String())
-				headers := map[string]string{
-					"Authorization": accessToken,
-				}
-
-				ctx, _ := test.MakeRequest(http.MethodGet, "/", headers, nil)
+			It("sets the 'user' key with the current user id, into the context", func() {
+				user := fabricators.FabricateTester()
+				ctx, _ := test.MakeAuthenticatedRequest(http.MethodGet, "/", nil, nil, user)
 
 				middlewares.HandleAuthenticatedRequest()(ctx)
 
