@@ -6,8 +6,8 @@ import (
 )
 
 type KeywordsQueryParams struct {
-	Offset int
-	Limit  int
+	Offset int `form:"offset" binding:"numeric"`
+	Limit  int `form:"limit" binding:"required,numeric"`
 }
 
 type KeywordsQuery struct {

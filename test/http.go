@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/markgravity/golang-ic/lib/models"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -16,6 +15,8 @@ import (
 	"strings"
 
 	"github.com/markgravity/golang-ic/helpers/log"
+	"github.com/markgravity/golang-ic/lib/middlewares"
+	"github.com/markgravity/golang-ic/lib/models"
 	"github.com/markgravity/golang-ic/test/helpers"
 
 	"github.com/gin-gonic/gin"
@@ -52,7 +53,10 @@ func MakeAuthenticatedRequest(method string, url string, headers map[string]stri
 	accessToken := "Bearer " + helpers.GenerateToken(user.Base.ID.String())
 	headers["Authorization"] = accessToken
 
-	return MakeRequest(method, url, headers, params)
+	ctx, resp := MakeRequest(method, url, headers, params)
+	middlewares.HandleAuthenticatedRequest()(ctx)
+
+	return ctx, resp
 }
 
 func MakePostFormRequest(url string, headers map[string]string, params map[string]interface{}) (*gin.Context, *httptest.ResponseRecorder) {
