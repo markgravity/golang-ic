@@ -20,7 +20,7 @@ var _ = Describe("AuthController", func() {
 		Context("Given VALID payload", func() {
 			It("returns the status OK", func() {
 				payload := map[string]interface{}{
-					"email":                 "test@gmail.com",
+					"email":                 "test2@gmail.com",
 					"password":              "test123",
 					"password_confirmation": "test123",
 				}
