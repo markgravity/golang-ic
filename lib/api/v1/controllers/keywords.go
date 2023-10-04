@@ -7,7 +7,6 @@ import (
 	"github.com/markgravity/golang-ic/lib/api/v1/forms"
 	"github.com/markgravity/golang-ic/lib/api/v1/queries"
 	"github.com/markgravity/golang-ic/lib/api/v1/serializers"
-	"github.com/markgravity/golang-ic/lib/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,7 +15,7 @@ type KeywordsController struct {
 	BaseController
 }
 
-func (KeywordsController) Upload(ctx *gin.Context) {
+func (c *KeywordsController) Upload(ctx *gin.Context) {
 	form := forms.KeywordsForm{}
 
 	err := ctx.ShouldBind(&form)
@@ -25,9 +24,7 @@ func (KeywordsController) Upload(ctx *gin.Context) {
 		return
 	}
 
-	value, _ := ctx.Get(UserKey)
-	user := value.(models.User)
-	form.User = &user
+	form.User = c.GetCurrentUser(ctx)
 
 	err = form.Save()
 	if err != nil {
@@ -38,7 +35,7 @@ func (KeywordsController) Upload(ctx *gin.Context) {
 	jsonhelpers.RenderJSON(ctx, http.StatusOK, nil)
 }
 
-func (KeywordsController) List(ctx *gin.Context) {
+func (c *KeywordsController) Index(ctx *gin.Context) {
 	params := queries.KeywordsQueryParams{}
 
 	err := ctx.ShouldBindQuery(&params)
@@ -47,10 +44,8 @@ func (KeywordsController) List(ctx *gin.Context) {
 		return
 	}
 
-	value, _ := ctx.Get(UserKey)
-	user := value.(models.User)
 	query := queries.KeywordsQuery{
-		User: user,
+		User: *c.GetCurrentUser(ctx),
 	}
 
 	keywords, err := query.Where(params)

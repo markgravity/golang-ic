@@ -1,4 +1,4 @@
-package responsemodels
+package modelsresponse
 
 type KeywordResponse struct {
 	ID     string `jsonapi:"primary,keyword"`

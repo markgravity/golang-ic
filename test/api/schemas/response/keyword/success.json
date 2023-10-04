@@ -43,13 +43,15 @@
               "type": "string"
             },
             "id": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             },
             "attributes": {
               "type": "object",
               "properties": {
                 "status": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": ["processing", "failed", "succeed"]
                 },
                 "text": {
                   "type": "string"

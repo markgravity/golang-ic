@@ -81,12 +81,12 @@ var _ = Describe("KeywordsController", func() {
 				ctx, resp := test.MakeAuthenticatedRequest(http.MethodGet, "/keywords", nil, payload, user)
 
 				controller := controllers.KeywordsController{}
-				controller.List(ctx)
+				controller.Index(ctx)
 
 				Expect(resp.Code).To(Equal(http.StatusOK))
 			})
 
-			It("returns correct response body", func() {
+			It("returns the keywords that belong to the current user, serialized in JSON", func() {
 				user := fabricators.FabricateTester()
 				fabricators.FabricateKeyword("k1", user)
 				fabricators.FabricateKeyword("k2", user)
@@ -97,7 +97,7 @@ var _ = Describe("KeywordsController", func() {
 				ctx, resp := test.MakeAuthenticatedRequest(http.MethodGet, "/keywords", nil, payload, user)
 
 				controller := controllers.KeywordsController{}
-				controller.List(ctx)
+				controller.Index(ctx)
 
 				Expect(resp.Result()).To(test.MatchJSONSchema("response/keyword/success"))
 			})
@@ -110,7 +110,7 @@ var _ = Describe("KeywordsController", func() {
 					ctx, resp := test.MakeAuthenticatedRequest(http.MethodGet, "/keywords", nil, nil, user)
 
 					controller := controllers.KeywordsController{}
-					controller.List(ctx)
+					controller.Index(ctx)
 
 					Expect(resp.Code).To(Equal(http.StatusUnprocessableEntity))
 				})
@@ -126,7 +126,7 @@ var _ = Describe("KeywordsController", func() {
 					ctx, resp := test.MakeAuthenticatedRequest(http.MethodGet, "/keywords", nil, payload, user)
 
 					controller := controllers.KeywordsController{}
-					controller.List(ctx)
+					controller.Index(ctx)
 
 					Expect(resp.Code).To(Equal(http.StatusBadRequest))
 				})
