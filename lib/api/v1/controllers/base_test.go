@@ -1,11 +1,11 @@
 package controllers_test
 
 import (
-	"github.com/markgravity/golang-ic/test/fabricators"
 	"net/http"
 
 	"github.com/markgravity/golang-ic/lib/api/v1/controllers"
 	"github.com/markgravity/golang-ic/test"
+	"github.com/markgravity/golang-ic/test/fabricators"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
