@@ -8,6 +8,10 @@ import (
 )
 
 func ComebineRoutes(engine *gin.Engine) {
+	keywordsController := controllers.KeywordsController{
+		BaseController: controllers.BaseController{},
+	}
+
 	v1 := engine.Group("/api/v1")
 
 	v1.GET("/health", controllers.HealthController{}.HealthStatus)
@@ -20,5 +24,6 @@ func ComebineRoutes(engine *gin.Engine) {
 	authenticatedV1 := v1
 	authenticatedV1.Use(middlewares.HandleAuthenticatedRequest())
 
-	authenticatedV1.POST("/keywords/upload", controllers.KeywordsController{}.Upload)
+	authenticatedV1.GET("/keywords", keywordsController.Index)
+	authenticatedV1.POST("/keywords/upload", keywordsController.Upload)
 }
