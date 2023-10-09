@@ -3,7 +3,6 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/markgravity/golang-ic/database"
 	jsonhelpers "github.com/markgravity/golang-ic/helpers/json"
 	"github.com/markgravity/golang-ic/lib/api/v1/forms"
 	"github.com/markgravity/golang-ic/lib/models"
@@ -24,10 +23,8 @@ func (KeywordsController) Upload(ctx *gin.Context) {
 		return
 	}
 
-	// TODO: Get user from token in this https://github.com/markgravity/golang-ic/issues/48
-	db := database.GetDB()
-	var user models.User
-	db.First(&user)
+	value, _ := ctx.Get(UserKey)
+	user := value.(models.User)
 	form.User = &user
 
 	err = form.Save()

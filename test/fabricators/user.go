@@ -25,3 +25,7 @@ func FabricateUser(email string, password string) *models.User {
 
 	return user
 }
+
+func FabricateTester() *models.User {
+	return FabricateUser("test@gmail.com", "123456")
+}
