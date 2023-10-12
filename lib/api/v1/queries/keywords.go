@@ -1,6 +1,8 @@
 package queries
 
 import (
+	"strings"
+
 	"github.com/markgravity/golang-ic/database"
 	"github.com/markgravity/golang-ic/lib/models"
 )
@@ -24,7 +26,7 @@ func (q *KeywordsQuery) Where(queryParams KeywordsQueryParams) ([]models.Keyword
 		Limit(queryParams.Limit)
 
 	if queryParams.Text != "" {
-		query.Where("text LIKE ?", "%"+queryParams.Text+"%")
+		query.Where("LOWER(text) LIKE ?", "%"+strings.ToLower(queryParams.Text)+"%")
 	}
 
 	err := query.Find(&keywords).Error

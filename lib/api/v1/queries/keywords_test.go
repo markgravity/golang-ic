@@ -108,6 +108,7 @@ var _ = Describe("KeywordsQuery", func() {
 				keywords, _ := query.Where(params)
 
 				Expect(keywords).To(HaveLen(1))
+				Expect(keywords[0].Text).To(Equal("k1"))
 			})
 		})
 
