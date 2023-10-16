@@ -91,6 +91,27 @@ var _ = Describe("KeywordsQuery", func() {
 			})
 		})
 
+		Context("Given Text", func() {
+			It("returns correct keywords", func() {
+				user := fabricators.FabricateUser("test@gmail.com", "123456")
+				fabricators.FabricateKeyword("k1", user)
+				fabricators.FabricateKeyword("k2", user)
+
+				params := queries.KeywordsQueryParams{
+					Offset: 0,
+					Limit:  2,
+					Text:   "1",
+				}
+				query := queries.KeywordsQuery{
+					User: *user,
+				}
+				keywords, _ := query.Where(params)
+
+				Expect(keywords).To(HaveLen(1))
+				Expect(keywords[0].Text).To(Equal("k1"))
+			})
+		})
+
 		Context("Given INCORRECT user", func() {
 			It("returns empty keywords", func() {
 				user1 := fabricators.FabricateUser("test@gmail.com", "123456")
