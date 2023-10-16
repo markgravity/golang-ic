@@ -8,6 +8,7 @@ import (
 	"github.com/markgravity/golang-ic/test"
 	"github.com/markgravity/golang-ic/test/fabricators"
 
+	"github.com/gin-gonic/gin"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -130,6 +131,64 @@ var _ = Describe("KeywordsController", func() {
 
 					Expect(resp.Code).To(Equal(http.StatusBadRequest))
 				})
+			})
+		})
+	})
+
+	Describe("GET /keyword/:id", func() {
+		AfterEach(func() {
+			test.CleanUpDatabase()
+		})
+		Context("Given VALID id", func() {
+			It("returns the status OK", func() {
+				user := fabricators.FabricateTester()
+				keyword := fabricators.FabricateKeyword("k1", user)
+				ctx, resp := test.MakeAuthenticatedRequest(http.MethodGet, "/keywords/"+keyword.Base.ID.String(), nil, nil, user)
+				ctx.Params = []gin.Param{
+					{
+						Key:   "id",
+						Value: keyword.Base.ID.String(),
+					},
+				}
+				controller := controllers.KeywordsController{}
+				controller.Show(ctx)
+
+				Expect(resp.Code).To(Equal(http.StatusOK))
+			})
+
+			It("returns the keyword that belong to the current user, serialized in JSON", func() {
+				user := fabricators.FabricateTester()
+				keyword := fabricators.FabricateKeyword("k1", user)
+				ctx, resp := test.MakeAuthenticatedRequest(http.MethodGet, "/keywords/"+keyword.Base.ID.String(), nil, nil, user)
+				ctx.Params = []gin.Param{
+					{
+						Key:   "id",
+						Value: keyword.Base.ID.String(),
+					},
+				}
+
+				controller := controllers.KeywordsController{}
+				controller.Show(ctx)
+
+				Expect(resp.Result()).To(test.MatchJSONSchema("response/keyword_detail/success"))
+			})
+		})
+
+		Context("Given INVALID id", func() {
+			It("returns the unprocessable entity status", func() {
+				user := fabricators.FabricateTester()
+				ctx, resp := test.MakeAuthenticatedRequest(http.MethodGet, "/keywords/invalid", nil, nil, user)
+				ctx.Params = []gin.Param{
+					{
+						Key:   "id",
+						Value: "INVALID",
+					},
+				}
+
+				controller := controllers.KeywordsController{}
+				controller.Show(ctx)
+
+				Expect(resp.Code).To(Equal(http.StatusUnprocessableEntity))
 			})
 		})
 	})
