@@ -132,4 +132,49 @@ var _ = Describe("KeywordsQuery", func() {
 			})
 		})
 	})
+
+	Describe("Find", func() {
+		AfterEach(func() {
+			test.CleanUpDatabase()
+		})
+
+		Context("Given EXISTS keyword ID", func() {
+			It("returns without error", func() {
+				user := fabricators.FabricateTester()
+				keyword := fabricators.FabricateKeyword("k1", user)
+
+				query := queries.KeywordsQuery{
+					User: *user,
+				}
+				_, err := query.Find(keyword.Base.ID.String())
+
+				Expect(err).To(BeNil())
+			})
+
+			It("returns correct keyword", func() {
+				user := fabricators.FabricateTester()
+				keyword := fabricators.FabricateKeyword("k1", user)
+
+				query := queries.KeywordsQuery{
+					User: *user,
+				}
+				result, _ := query.Find(keyword.Base.ID.String())
+
+				Expect(result.Base.ID).To(Equal(keyword.Base.ID))
+			})
+		})
+
+		Context("Given NON-EXISTS keyword ID", func() {
+			It("returns the database error", func() {
+				user := fabricators.FabricateTester()
+
+				query := queries.KeywordsQuery{
+					User: *user,
+				}
+				_, err := query.Find("invalid")
+
+				Expect(err).NotTo(BeNil())
+			})
+		})
+	})
 })

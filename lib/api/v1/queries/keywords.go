@@ -36,3 +36,15 @@ func (q *KeywordsQuery) Where(queryParams KeywordsQueryParams) ([]models.Keyword
 
 	return keywords, nil
 }
+
+func (q *KeywordsQuery) Find(id string) (*models.Keyword, error) {
+	db := database.GetDB()
+
+	var keyword models.Keyword
+	err := db.First(&keyword, "id = ?", id).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &keyword, nil
+}
