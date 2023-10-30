@@ -12,7 +12,7 @@ import (
 
 var _ = Describe("KeywordDetailSerializer", func() {
 	Describe("#Data", func() {
-		AfterEach(func() {
+		BeforeEach(func() {
 			test.CleanUpDatabase()
 		})
 
