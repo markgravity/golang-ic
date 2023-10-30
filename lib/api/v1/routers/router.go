@@ -25,5 +25,6 @@ func ComebineRoutes(engine *gin.Engine) {
 	authenticatedV1.Use(middlewares.HandleAuthenticatedRequest())
 
 	authenticatedV1.GET("/keywords", keywordsController.Index)
+	authenticatedV1.GET("/keywords/:id", keywordsController.Show)
 	authenticatedV1.POST("/keywords/upload", keywordsController.Upload)
 }

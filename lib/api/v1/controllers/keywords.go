@@ -60,3 +60,27 @@ func (c *KeywordsController) Index(ctx *gin.Context) {
 
 	jsonhelpers.RenderJSON(ctx, http.StatusOK, serializer.Data())
 }
+
+func (c *KeywordsController) Show(ctx *gin.Context) {
+	keywordID, success := ctx.Params.Get("id")
+	if !success {
+		jsonhelpers.RenderUnprocessableEntityError(ctx, nil)
+		return
+	}
+
+	query := queries.KeywordsQuery{
+		User: *c.GetCurrentUser(ctx),
+	}
+
+	keyword, err := query.Find(keywordID)
+	if err != nil {
+		jsonhelpers.RenderUnprocessableEntityError(ctx, err)
+		return
+	}
+
+	serializer := serializers.KeywordDetailSerializer{
+		Keyword: *keyword,
+	}
+
+	jsonhelpers.RenderJSON(ctx, http.StatusOK, serializer.Data())
+}
