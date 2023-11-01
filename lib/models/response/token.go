@@ -1,4 +1,4 @@
-package responsemodels
+package modelsresponse
 
 type TokenResponse struct {
 	ID           string `jsonapi:"primary,token"`

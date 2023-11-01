@@ -3,10 +3,10 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/markgravity/golang-ic/database"
 	jsonhelpers "github.com/markgravity/golang-ic/helpers/json"
 	"github.com/markgravity/golang-ic/lib/api/v1/forms"
-	"github.com/markgravity/golang-ic/lib/models"
+	"github.com/markgravity/golang-ic/lib/api/v1/queries"
+	"github.com/markgravity/golang-ic/lib/api/v1/serializers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,7 +15,7 @@ type KeywordsController struct {
 	BaseController
 }
 
-func (KeywordsController) Upload(ctx *gin.Context) {
+func (c *KeywordsController) Upload(ctx *gin.Context) {
 	form := forms.KeywordsForm{}
 
 	err := ctx.ShouldBind(&form)
@@ -24,11 +24,7 @@ func (KeywordsController) Upload(ctx *gin.Context) {
 		return
 	}
 
-	// TODO: Get user from token in this https://github.com/markgravity/golang-ic/issues/48
-	db := database.GetDB()
-	var user models.User
-	db.First(&user)
-	form.User = &user
+	form.User = c.GetCurrentUser(ctx)
 
 	err = form.Save()
 	if err != nil {
@@ -37,4 +33,54 @@ func (KeywordsController) Upload(ctx *gin.Context) {
 	}
 
 	jsonhelpers.RenderJSON(ctx, http.StatusOK, nil)
+}
+
+func (c *KeywordsController) Index(ctx *gin.Context) {
+	params := queries.KeywordsQueryParams{}
+
+	err := ctx.ShouldBindQuery(&params)
+	if err != nil {
+		jsonhelpers.RenderErrorWithDefaultCode(ctx, http.StatusBadRequest, err)
+		return
+	}
+
+	query := queries.KeywordsQuery{
+		User: *c.GetCurrentUser(ctx),
+	}
+
+	keywords, err := query.Where(params)
+	if err != nil {
+		jsonhelpers.RenderUnprocessableEntityError(ctx, err)
+		return
+	}
+
+	serializer := serializers.KeywordsSerializer{
+		Keywords: keywords,
+	}
+
+	jsonhelpers.RenderJSON(ctx, http.StatusOK, serializer.Data())
+}
+
+func (c *KeywordsController) Show(ctx *gin.Context) {
+	keywordID, success := ctx.Params.Get("id")
+	if !success {
+		jsonhelpers.RenderUnprocessableEntityError(ctx, nil)
+		return
+	}
+
+	query := queries.KeywordsQuery{
+		User: *c.GetCurrentUser(ctx),
+	}
+
+	keyword, err := query.Find(keywordID)
+	if err != nil {
+		jsonhelpers.RenderUnprocessableEntityError(ctx, err)
+		return
+	}
+
+	serializer := serializers.KeywordDetailSerializer{
+		Keyword: *keyword,
+	}
+
+	jsonhelpers.RenderJSON(ctx, http.StatusOK, serializer.Data())
 }

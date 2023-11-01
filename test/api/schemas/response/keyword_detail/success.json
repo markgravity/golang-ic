@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "adword_links": {
+              "type": "string"
+            },
+            "adword_links_count": {
+              "type": "integer"
+            },
+            "html_code": {
+              "type": "string"
+            },
+            "links_count": {
+              "type": "integer"
+            },
+            "non_adword_links": {
+              "type": "string"
+            },
+            "non_adword_links_count": {
+              "type": "integer"
+            },
+            "status": {
+              "type": "string",
+              "enum": ["processing", "failed", "succeed"]
+            },
+            "text": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "adword_links",
+            "adword_links_count",
+            "html_code",
+            "links_count",
+            "non_adword_links",
+            "non_adword_links_count",
+            "status",
+            "text"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "attributes"
+      ]
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

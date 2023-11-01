@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "attributes": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": ["processing", "failed", "succeed"]
+                },
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status",
+                "text"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "id",
+            "attributes"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "attributes": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": ["processing", "failed", "succeed"]
+                },
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "status",
+                "text"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "id",
+            "attributes"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

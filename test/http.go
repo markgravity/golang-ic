@@ -15,6 +15,8 @@ import (
 	"strings"
 
 	"github.com/markgravity/golang-ic/helpers/log"
+	"github.com/markgravity/golang-ic/lib/middlewares"
+	"github.com/markgravity/golang-ic/lib/models"
 	"github.com/markgravity/golang-ic/test/helpers"
 
 	"github.com/gin-gonic/gin"
@@ -44,6 +46,19 @@ func MakeRequest(method string, url string, headers map[string]string, params ma
 	return ctx, responseRecorder
 }
 
+func MakeAuthenticatedRequest(method string, url string, headers map[string]string, params map[string]interface{}, user *models.User) (*gin.Context, *httptest.ResponseRecorder) {
+	if headers == nil {
+		headers = map[string]string{}
+	}
+	accessToken := "Bearer " + helpers.GenerateToken(user.Base.ID.String())
+	headers["Authorization"] = accessToken
+
+	ctx, resp := MakeRequest(method, url, headers, params)
+	middlewares.HandleAuthenticatedRequest()(ctx)
+
+	return ctx, resp
+}
+
 func MakePostFormRequest(url string, headers map[string]string, params map[string]interface{}) (*gin.Context, *httptest.ResponseRecorder) {
 	if headers == nil {
 		headers = map[string]string{}
@@ -59,10 +74,21 @@ func MakePostFormRequest(url string, headers map[string]string, params map[strin
 	return ctx, responseRecorder
 }
 
-func MakeMultipartRequestRequest(url string, filePath string, contentType string) (*gin.Context, *httptest.ResponseRecorder) {
-	headers, payload := CreateMultipartRequestInfo(filePath, contentType)
+func MakeMultipartRequestRequest(url string, filePath string, contentType string, headers http.Header, user *models.User) (*gin.Context, *httptest.ResponseRecorder) {
+	if user != nil {
+		if headers == nil {
+			headers = http.Header{}
+		}
+
+		headers.Set(
+			"Authorization",
+			"Bearer "+helpers.GenerateToken(user.Base.ID.String()),
+		)
+	}
+
+	newHeaders, payload := CreateMultipartRequestInfo(filePath, contentType, headers)
 	request, _ := http.NewRequest("POST", url, payload)
-	request.Header = headers
+	request.Header = newHeaders
 
 	ctx, responseRecorder := CreateGinTestContext()
 	ctx.Request = request
@@ -71,7 +97,7 @@ func MakeMultipartRequestRequest(url string, filePath string, contentType string
 }
 
 func GetMultipartAttributesFromFile(filePath string, contentType string) (multipart.File, *multipart.FileHeader, error) {
-	headers, payload := CreateMultipartRequestInfo(filePath, contentType)
+	headers, payload := CreateMultipartRequestInfo(filePath, contentType, nil)
 	req, err := http.NewRequest("POST", "", payload)
 	if err != nil {
 		return nil, nil, err
@@ -83,7 +109,7 @@ func GetMultipartAttributesFromFile(filePath string, contentType string) (multip
 	return file, fileHeader, err
 }
 
-func CreateMultipartRequestInfo(filePath string, contentType string) (http.Header, *bytes.Buffer) {
+func CreateMultipartRequestInfo(filePath string, contentType string, headers http.Header) (http.Header, *bytes.Buffer) {
 	realPath := fmt.Sprintf("%s/test/fixtures/files/%s", RootDir(), filePath)
 	file, err := os.Open(realPath)
 	if err != nil {
@@ -104,7 +130,9 @@ func CreateMultipartRequestInfo(filePath string, contentType string) (http.Heade
 	}
 	writer.Close()
 
-	headers := http.Header{}
+	if headers == nil {
+		headers = http.Header{}
+	}
 	headers.Set("Content-Type", writer.FormDataContentType())
 
 	return headers, body
